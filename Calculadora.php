@@ -6,6 +6,7 @@
 <body> 
   <div id="formulario">
     Minha Calculadora!  
+<!-- Isso serve para evitar codigos maliciosos -->
   <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
     <input type="number" name="a"
     placeholder="Primeiro número">
@@ -23,13 +24,15 @@
 </form>
   </div>
     <?php
+
         if($_SERVER["REQUEST_METHOD"]="POST")
             {
+                //Serve para filtrar o que será inserido nos campos de input
                 $x= filter_input(INPUT_POST,"a",FILTER_SANITIZE_NUMBER_FLOAT);
                 $y= filter_input(INPUT_POST,"b",FILTER_SANITIZE_NUMBER_FLOAT);
                 $operacao=htmlspecialchars($_POST["operador"]);
                 }
-         
+         //Verificação de erros
          $erros=false;       
         if(empty($x) ||empty($y) || empty($operacao))
         {
@@ -41,6 +44,7 @@
             {
                 echo "<div class='resultado'>Apenas escreva números nos campos</div>";
             }}
+            //Realizando os calculos
         if(!$erros)
             {
                 $resultado=0;
@@ -72,6 +76,7 @@
                     default:
                         echo"ERRO";     
                 }
+                //Exibir o resultado
                 if($operacao=="potencia")
                     {
                         echo "<div class='resultado'>Resultado:".$x."^" .$y ."=".$resultado ."</div>";            
