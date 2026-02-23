@@ -79,7 +79,7 @@
                     else{
                      echo "<div class='resultado'>Resultado:".$operacao. " de ". $x ." e ".$y." = " .$resultado ."</div>";    
                     }
-            }
+     }
     ?>
 </body>
 </html>
