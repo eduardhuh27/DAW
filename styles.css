@@ -1,0 +1,17 @@
+#formulario
+{
+position: absolute;
+justify-self: center;
+top:30%;
+text-align: center;
+}
+#botao
+{
+    justify-self: center;
+}
+.resultado
+{
+    position: absolute;
+    justify-self: center;
+    top:37%
+}
