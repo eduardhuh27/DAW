@@ -1,90 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body> 
-  <div id="formulario">
-    Minha Calculadora!  
-<!-- Isso serve para evitar codigos maliciosos -->
-  <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
-    <input type="number" name="a"
-    placeholder="Primeiro número">
-    <input type="number" name="b"
-    placeholder="Segundo número">
-    <br>
-    <select name="operador">
-       <option value="soma">Somar</option>
-       <option value="subtracao">Subtrair</option>
-       <option value="multiplicacao">Multiplicar</option>
-       <option value="divisao">Dividir</option>
-       <option value="potencia">Potência</option>
-    </select>
-    <button>Calcular</button>
-</form>
-  </div>
-    <?php
+<?php session_start();?>
+<?php
 
-        if($_SERVER["REQUEST_METHOD"]="POST")
+if($_SERVER["REQUEST_METHOD"]=="POST")
+    {
+    //Serve para filtrar o que será inserido nos campos de input
+        $x= filter_input(INPUT_POST,"a",FILTER_SANITIZE_NUMBER_FLOAT);
+        $y= filter_input(INPUT_POST,"b",FILTER_SANITIZE_NUMBER_FLOAT);
+        $operacao=htmlspecialchars($_POST["operador"]) ?? "";
+
+        //Verificação de erros
+        $erros=false;       
+        if( $x=="" || $y=="" )
             {
-                //Serve para filtrar o que será inserido nos campos de input
-                $x= filter_input(INPUT_POST,"a",FILTER_SANITIZE_NUMBER_FLOAT);
-                $y= filter_input(INPUT_POST,"b",FILTER_SANITIZE_NUMBER_FLOAT);
-                $operacao=htmlspecialchars($_POST["operador"]);
+                   $_SESSION['mensagem_erro'] = "Preencha todos os campos para realizar a operação";
+                $erros=true;
+                } 
+                else
+                {   
+                    if(!is_numeric($x)|| !is_numeric($y))
+                    {
+                        $_SESSION['mensagem_erro'] ="Apenas escreva números nos campos";
+                    }
+                   
+                       
+                    
                 }
-         //Verificação de erros
-         $erros=false;       
-        if(empty($x) ||empty($y) || empty($operacao))
-        {
-            echo"<div class='resultado'>Preencha todos os campos para realizar a operação</div>";
-            $erros=true;
-        } 
-        else{   
-        if(!is_numeric($x)|| !is_numeric($y))
-            {
-                echo "<div class='resultado'>Apenas escreva números nos campos</div>";
-            }}
-            //Realizando os calculos
-        if(!$erros)
-            {
-                $resultado=0;
-
-                switch($operacao)
+    
+                //Realizando os calculos
+                   if(!$erros)
+                    {
+                        $resultado=0;
+                        
+                        switch($operacao)
                 {
                     case "soma":
                         $resultado=$x+$y;
-                        break;
+                    break;
                     case "subtracao":
                         $resultado=$x-$y;
-                        break;
-                     case "multiplicacao":
+                    break;
+                    case "multiplicação":
                         $resultado=$x*$y;
-                        break;
+                    break;
                     case "divisao":
-                        $resultado=$x/$y;
-                        break;
+                         if($y==0) 
+                            {
+                               $_SESSION['mensagem_erro'] ="Divisão por zero ";
+                               $erros=true;
+                            }
+                        else
+                            {
+                                $resultado=$x/$y;
+                            }
+                    break;
                     case "potencia":
                         $resultado=$x;   
-                        if($y>1)
-                        { 
-                            do{
-                                $resultado=$resultado*$x;
-                                $y--;       
-                            }while($y>1);
-                        }
-                        break;
+                    
+                    if($y>1)
+                    { 
+                        do{
+                        $resultado=$resultado*$x;
+                        $y--;       
+                        }while($y>1);
+                    }
+                    break;
                     default:
                         echo"ERRO";     
                 }
-                //Exibir o resultado
-                if($operacao=="potencia")
+            //Exibir o resultado
+            if(!$erros)
+                {
+                    if($operacao=="potencia")
                     {
-                        echo "<div class='resultado'>Resultado:".$x."^" .$y ."=".$resultado ."</div>";            
+                        $_SESSION['mensagem_resultado'] = "Resultado: $x^$y = $resultado";            
                     }
                     else{
-                     echo "<div class='resultado'>Resultado:".$operacao. " de ". $x ." e ".$y." = " .$resultado ."</div>";    
+                        $_SESSION['mensagem_resultado']="Resultado: $operacao de $x e $y= $resultado ";    
+                        }
+                }
+             }
+                        header("Location:".$_SERVER['PHP_SELF']);
+                        exit;
+                        }
+                        ?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body <style background-color: darkslategrey</style>
+        <div class="formulario">
+            Minha Calculadora!  
+            <!-- Isso serve para evitar codigos maliciosos -->
+            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" >
+                <input type="number" name="a"
+                placeholder="Primeiro número">
+                <input type="number" name="b"
+                placeholder="Segundo número">
+                <br>
+                <select name="operador">
+                    <option value="soma">Somar</option>
+                    <option value="subtracao">Subtrair</option>
+                    <option value="multiplicação">Multiplicar</option>
+                    <option value="divisao">Dividir</option>
+                    <option value="potencia">Potência</option>
+                </select>
+                <button>Calcular</button>
+            <?php
+                if(isset($_SESSION['mensagem_resultado']))
+                    {
+                        echo"<div class='resultado'>". $_SESSION['mensagem_resultado']."</div>";
+
+                        unset($_SESSION['mensagem_resultado']);
                     }
-     }
-    ?>
+                    if(isset($_SESSION['mensagem_erro']))
+                    {
+                        echo"<div class='resultado'>". $_SESSION['mensagem_erro']."</div>";
+
+                        unset($_SESSION['mensagem_erro']);
+                    }
+            ?>
+            </div>
+</form>
 </body>
 </html>
