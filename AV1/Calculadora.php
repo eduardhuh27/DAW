@@ -65,7 +65,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
                     }
                     case"raiz":
                         do{
-                            $resultado=$x/$x/
+                            $resultado=$x/$x
+                                
                             $y--;
                             }while($y>1);
                     break;
