@@ -60,17 +60,13 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
                     { 
                         do{
                             //poderia usar a função pow
+                            //pow($x,$y);
                         $resultado=$resultado*$x;
                         $y--;       
                         }while($y>1);
                     }
                     case"raiz":
-                        do{
-                            //poderia usar a função sqrt, mas ai o segundo input seria algo desnecessário,pois não seria usado
-                            $resultado=$x/$x
-                                
-                            $y--;
-                            }while($y>1);
+                        $resultado= pow($x,(1/$y));
                     break;
                     default:
                         echo"ERRO";     
