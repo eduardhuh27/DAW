@@ -78,10 +78,10 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
                 {
                     if($operacao=="potencia")
                     {
-                        $_SESSION['mensagem_resultado'] = "Resultado: $x^$y = $resultado";            
+                        $_SESSION['mensagem_resultado'] = "Resultado: $resultado";            
                     }
                     else{
-                        $_SESSION['mensagem_resultado']="Resultado: $operacao de $x e $y= $resultado ";    
+                        $_SESSION['mensagem_resultado']="Resultado: $resultado ";    
                         }
                 }
              }
