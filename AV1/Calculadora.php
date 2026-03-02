@@ -59,12 +59,14 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
                     if($y>1)
                     { 
                         do{
+                            //poderia usar a função pow
                         $resultado=$resultado*$x;
                         $y--;       
                         }while($y>1);
                     }
                     case"raiz":
                         do{
+                            //poderia usar a função sqrt, mas ai o segundo input seria algo desnecessário,pois não seria usado
                             $resultado=$x/$x
                                 
                             $y--;
@@ -76,13 +78,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
             //Exibir o resultado
             if(!$erros)
                 {
-                    if($operacao=="potencia")
-                    {
-                        $_SESSION['mensagem_resultado'] = "Resultado: $resultado";            
-                    }
-                    else{
-                        $_SESSION['mensagem_resultado']="Resultado: $resultado ";    
-                        }
+                        $_SESSION['mensagem_resultado'] = "Resultado: $resultado";                   
                 }
              }
                         header("Location:".$_SERVER['PHP_SELF']);
