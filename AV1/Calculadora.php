@@ -63,6 +63,11 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
                         $y--;       
                         }while($y>1);
                     }
+                    case"raiz":
+                        do{
+                            $resultado=$x/$x/
+                            $y--;
+                            }while($y>1);
                     break;
                     default:
                         echo"ERRO";     
@@ -104,6 +109,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
                     <option value="multiplicação">Multiplicar</option>
                     <option value="divisao">Dividir</option>
                     <option value="potencia">Potência</option>
+                    <option value="raiz">Raiz</option>
                 </select>
                 <button>Calcular</button>
             <?php
