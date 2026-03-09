@@ -1,0 +1,56 @@
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #444;
+    }
+
+    table {
+        width: 80%;
+        max-width: 800px;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        overflow: hidden; /* Mantém as bordas arredondadas na tabela */
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #007bff;
+        color: white;
+        text-transform: uppercase;
+        font-size: 14px;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1; /* Efeito ao passar o mouse */
+    }
+
+    button {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background-color: #5a6268;
+    }
