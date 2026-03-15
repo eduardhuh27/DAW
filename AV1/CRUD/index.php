@@ -50,11 +50,11 @@
     <br><br>
     Email: <input type="text" name="email">
     <br><br>
-    <input type="submit" value="Criar Nova Disciplina">
+    <input type="submit" value="Inserir Novo Aluno">
 </form>
-<button onclick="window.location.href='exibirAlunos.php';">Exibir tabela
+<button onclick="window.location.href='exibirAlunos.php';">Exibir Tabela
 </button>
-<button onclick="window.location.href='Busca.php';">Procurar aluno pela matricula
+<button onclick="window.location.href='Busca.php';">Procurar Aluno Pela Matricula   
 </button>
 <p>
     <?php
