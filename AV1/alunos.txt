@@ -1,0 +1,4 @@
+nome;matricula;email
+;;
+ra;51541;RE@fas
+erasda;471151;Wee@dsada
