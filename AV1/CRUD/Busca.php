@@ -3,20 +3,31 @@
     if ($_SERVER['REQUEST_METHOD'] == 'POST')
     {
         $procurado=filter_input(INPUT_POST,"procurado",FILTER_SANITIZE_NUMBER_FLOAT);
+        
         $_SESSION['encontrou']="O aluno que possui a matricula:".$procurado." é:";
         $arquivo=fopen("alunos.txt","r");
-        while(!feof($arquivo))
+
+        fgetcsv($arquivo, 0, ";");
+
+        $achou=false;
+
+        while(($dados = fgetcsv($arquivo, 0, ";")) !== FALSE)
         {
-            
-            $dados=fgetcsv($arquivo,0,";");
+        
             if($dados[1]==$procurado)
             {
+                $achou=true;
+                $_SESSION['procura']=$procurado;
                 $_SESSION['dados']=$dados[0];
                 break;
             }
-            
         }
 
+        if(!$achou)
+            {
+                $_SESSION['naoEncontrou']="Aluno não registrado";
+                 unset($_SESSION['encontrou']);
+            }
     fclose($arquivo);
 }
 ?>
@@ -35,7 +46,21 @@
     </form>
     <br>
     <button onclick="window.location.href='index.php';">Voltar ao cadastro</button>
-    <p><?php echo $_SESSION['encontrou'].$_SESSION['dados']?>
+     <button onclick="window.location.href='alterar.php';">Alterar aluno</button>
+    <p>
+        
+        <?php 
+        if(isset($_SESSION['encontrou']))
+         {
+            echo $_SESSION['encontrou'].$_SESSION['dados'];
+            unset($_SESSION['encontrou']);
+        }
+        if(isset($_SESSION['naoEncontrou']))
+            {
+                echo $_SESSION['naoEncontrou'];
+                unset($_SESSION['naoEncontrou']);
+            }
+    ?>
     </p>
 </body>
 </html>

@@ -8,32 +8,36 @@
     <link rel="stylesheet" href="stylee.css">
 </head>
 <body>
-    
-    <?php 
-
-            $_SESSION['mensagem_erro']="Fim do arquivo alcançado ou erro na leitura.";
-
-        echo "<table>";
-
-        $arquivo=fopen("alunos.txt","r") or die("Erro ao abrir o arquivo!");
+<?php 
+    $_SESSION['mensagem_erro']="Fim do arquivo alcançado ou erro na leitura.";
+    echo "<table>";
         
-        $cabecalho=fgetcsv($arquivo,0,";");
+    if(file_exists("alunos.txt"))
+    {
+        $arquivo=fopen("alunos.txt","r") or die("Erro ao abrir o arquivo!");
+        $cabecalho=fgetcsv($arquivo,0,";") ?? true ;
         echo "<tr>";
-        foreach($cabecalho as $coluna)
+        if(!empty($cabecalho))
+        {
+            foreach($cabecalho as $coluna)
             {
                 echo "<th>".htmlspecialchars($coluna)."</th>";
             }
+        }
+        else
+        {
+            echo $_SESSION['mensagem_erro'];
+            unset($_SESSION['mensagem_erro']);
+        }
         echo "</tr>";
-        
-        while(!feof($arquivo))
+        while(($dados = fgetcsv($arquivo, 0, ";")) !== FALSE)
             {
                 
-                $dados=fgetcsv($arquivo,0,";");
+                
                 if(empty($dados))
                     {
                         echo $_SESSION['mensagem_erro'];
                         unset($_SESSION['mensagem_erro']);
-                        echo "</table>"; 
                         break;
                     }
                 else
@@ -48,11 +52,14 @@
                         
                 
             }
+        }
+        
+        
             echo "</table>";
-
+    if(file_exists("alunos.txt"))
     fclose($arquivo);
 
-
+    unset($_SESSION['mensagem_erro']);
     ?>
     <button onclick="window.location.href='index.php';">Voltar ao cadastro</button>
     

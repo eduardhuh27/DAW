@@ -1,0 +1,92 @@
+body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+    }
+
+    h1 {
+        color: #444;
+    }
+
+    form {
+        background: #fff;
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: 300px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    /* Botão de Salvar Alterações (Amarelo para indicar edição) */
+    input[type="submit"] {
+        background-color: #279b40 ; 
+        color: #212529; /* Texto escuro para dar contraste no amarelo */
+        font-weight: bold;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%; 
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #218338;
+    }
+
+    /* Botões de voltar (mantive o seu azul padrão) */
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 360px; /* Largura total somando o form + padding */
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Caixa Verde (Sucesso) */
+    .resultado {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        font-weight: bold;
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        width: 340px; /* Para alinhar com o tamanho visual do form */
+    }
+
+    /* Caixa Vermelha (Erro) */
+    .erro {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 4px;
+        text-align: center;
+        font-weight: bold;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        width: 340px;
+    }
