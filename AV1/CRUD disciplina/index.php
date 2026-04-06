@@ -1,25 +1,36 @@
+<?php session_start();?>
 <?php
-    $nomeArq = "dados.txt";
+    $_SESSION['nomeArq'] = "dados.txt";
 
     if($_SERVER["REQUEST_METHOD"]=="POST")
         {
-            $nome=$_POST["nome"];
-            $sigla=$_POST["sigla"];
-            $carga=$_POST["carga"];
-            
-            if(!file_exists($nomeArq))
+            $nome=htmlspecialchars($_POST["nome"]??"");
+            $sigla=htmlspecialchars($_POST["sigla"] ?? "");
+            $carga=filter_input(INPUT_POST,"carga",FILTER_SANITIZE_NUMBER_INT);
+            $_SESSION["erro"]=false;
+
+            if(empty($nome)|| empty($sigla) || empty($carga))
                 {
-                    $arq=fopen($nomeArq,"w");
+                    $_SESSION['msg_erro']="ERRO:todos campos do formulario devem ser preenchidos";
+                    $_SESSION["erro"]=true;
+                }
+
+        if(!$_SESSION["erro"])
+            {
+            if(!file_exists($_SESSION['nomeArq']))
+                {
+                    $arq=fopen($_SESSION['nomeArq'],"w");
                     $cabecalho="Sigla;Nome;Carga\n";
                     fwrite($arq,$cabecalho);
                     fclose($arq);
                 }
-            $arq=fopen($nomeArq,"a");
-            $linha=$nome.";".$sigla.";".$carga."\n";
+            $arq=fopen($_SESSION['nomeArq'],"a");
+            $linha=$sigla.";".$nome.";".$carga."\n";
             fwrite($arq,$linha);
             fclose($arq);
+            }
+            header("Location: ". $_SERVER["PHP_SELF"]);
         }
-
 ?>
 
 <!DOCTYPE html>
@@ -30,11 +41,21 @@
     <title>Document</title>
 </head>
 <body>
-    <form method="POST">
+    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
     <input type="text" placeholder="Nome" name="nome">
     <input type="text" placeholder="Sigla" name="sigla">
     <input type="number" placeholder="Carga" name="carga">
-    <button type="submit">Cadastrar 
+    <button type="submit">Cadastrar</button>
+    <br>
     </form>
+    <button onclick="window.location.href='Exibir.php';">Exibir Disciplinas</button>
+    <button onclick="window.location.href='Atualizar.php';">Atualizar Disciplinas</button>
+        <?php 
+            if(isset($_SESSION['msg_erro']))
+                {
+                    echo $_SESSION['msg_erro'];
+                    unset($_SESSION['msg_erro']);
+                }
+        ?>
 </body>
 </html>
