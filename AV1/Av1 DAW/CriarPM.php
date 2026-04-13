@@ -14,7 +14,7 @@
             if(!file_exists("PerguntaM.txt"))
             {
                 $arq=fopen("PerguntaM.txt","w") or die("Erro ao abrir o arquivo");
-                $linha="id;pergunta;resposta\n";
+                $linha="id;pergunta;resposta;A;B;C;D;E\n";
                 fwrite($arq,$linha);
                 fclose($arq);
             }
@@ -43,7 +43,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    
+    <title>Criar pergunta objetiva</title>
 </head>
 <body>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
@@ -57,7 +58,10 @@
     <input type="text" placeholder="E" name="e">
     <input type="text" placeholder="Resposta correta" name="resposta">
     <button type="submit" >Criar pergunta objetiva</button>
-</form>    
+</form>
+<button onclick="window.location.href='AlterarPM.php'">Alterar perguntar objetiva</button>
+<button onclick="window.location.href='ExibirP.php'">Exibir perguntas </button>
+<button onclick="window.location.href='ExibirUmaP.php'">Exibir pergunta</button>
 <button  onclick="window.location.href='index.php'">Voltar ao inicio </button>
 </body>
 </html>

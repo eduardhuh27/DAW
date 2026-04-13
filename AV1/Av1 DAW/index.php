@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $_SESSION['logado']=false;
     if($_SERVER['REQUEST_METHOD']=="POST")
         {
             $_SESSION['erro']=false;
@@ -13,10 +14,11 @@
                 fwrite($arq,$linha);
                 fclose($arq);
             }
-            if(empty($nome) || empty($email)|| empty($senha))
+            if( empty($nome) || empty($email) || empty($senha))
                 {
                     $_SESSION['erro']=true;
                     $_SESSION['mensagem_erro']="Preencha todos os campos";
+                    unset($_POST['btC']);
                 }
             if(!$_SESSION['erro'])
                 {
@@ -24,6 +26,7 @@
                     $linha=$nome.";".$email.";".$senha."\n";
                     fwrite($arq,$linha);
                     fclose($arq);
+                    $_SESSION['logado']=true;
                     
                 }
 
@@ -34,22 +37,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    
+    <title>Inicio</title>
 </head>
 <body>
+    <?php if(!$_SESSION['logado']):?>
     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
     <input type="text" placeholder="Nome" name="nome">
     <input type="text" placeholder="Email" name="email">
     <input type="text" placeholder="Senha" name="senha">
     <button type="submit" name="btC">Cadastrar Usuario</button>
-    </form>
-    <?php if(isset($_POST['btC'])) :?>
-    <button onclick="window.location.href='CriarPD.php'">Criar perguntar discursiva</button>
-    <button onclick="window.location.href='CriarPM.php'">Criar perguntar objetiva</button>
-    <button onclick="window.location.href='AlterarPD.php'">Alterar perguntar discursiva</button>
-    <button onclick="window.location.href='AlterarPM.php'">Alterar perguntar objetiva</button>
-    <button onclick="window.location.href='ExibirP.php'">Exibir perguntas </button>
-    <button onclick="window.location.href='ExibirUmaP.php'">Exibir pergunta</button>
-    <?php endif; ?>
+    <?php  endif;
+    if($_SESSION['logado'])
+        echo "<h1>Usuario cadastrado com sucesso!</h1>"
+        ?>
+        </form>
+
+    <?php if(!isset($_POST['btC'])) :?>
+    <button onclick="window.location.href='CriarPD.php'">Criar pergunta discursiva</button>
+    <button onclick="window.location.href='CriarPM.php'">Criar pergunta objetiva</button>
+        
+    <?php endif;?>
+    <?php
+    if($_SESSION['erro'])
+        {
+            if(isset($_SESSION['mensagem_erro']))
+                {
+                    echo htmlspecialchars($_SESSION['mensagem_erro']);
+                    unset($_SESSION['mensagem_erro']);
+                }
+        } 
+        ?>
 </body>
 </html>

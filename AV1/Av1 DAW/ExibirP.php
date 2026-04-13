@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    
+    <title>Exibir perguntas e respotas</title>
 </head>
 <body>
     <?php
@@ -17,21 +18,21 @@
                     echo "<table>";
                     if(!empty($cabM))
                         {
-                            echo "<td>";
+                            echo "<tr>";
                             foreach($cabM as $coluna)
                                 {
                                    echo "<th>". htmlspecialchars($coluna)."</th>";
                                 }
-                                echo "</td>";
+                                echo "</tr>";
                         }
                         while(($dados=fgetcsv($arqM,0,";"))!==FALSE)
                             {
-                                
+                                echo "<tr>";
                             foreach($dados as $valor)
                                 {
-                                   echo "<tr>". htmlspecialchars($valor)."</tr>";
+                                   echo "<td>". htmlspecialchars($valor)."</td>";
                                 }
-                                
+                                echo "</tr>";
                             }
 
                     echo "</table>";
@@ -40,21 +41,21 @@
 
                     if(!empty($cabD))
                         {
-                            echo "<td>";
+                            echo "<tr>";
                             foreach($cabD as $coluna)
                                 {
                                    echo "<th>". htmlspecialchars($coluna)."</th>";
                                 }
-                                echo "</td>";
+                                echo "</tr>";
                         }
                           while(($dados=fgetcsv($arqD,0,";"))!==FALSE)
                             {
-                                
+                                echo "<tr>";
                             foreach($dados as $valor)
                                 {
-                                   echo "<tr>". htmlspecialchars($valor)."</tr>";
+                                   echo "<td>". htmlspecialchars($valor)."</td>";
                                 }
-                                
+                                echo "</tr>";
 
                             }
 
@@ -70,5 +71,8 @@
                 
 
     ?>
+    <button onclick="window.location.href='CriarPD.php'">Voltar a criar perguntar discursiva</button>
+    <button onclick="window.location.href='CriarPM.php'">Voltar a criar perguntar objetiva</button>
+    <button  onclick="window.location.href='index.php'">Voltar ao inicio </button>
 </body>
 </html>
