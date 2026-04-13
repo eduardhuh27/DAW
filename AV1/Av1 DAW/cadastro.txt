@@ -1,0 +1,2 @@
+nome;email;senha
+Eduardo;edau@daed;123
