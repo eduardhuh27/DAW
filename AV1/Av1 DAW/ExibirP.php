@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="style.css">
     <title>Exibir perguntas e respotas</title>
 </head>
 <body>
@@ -71,8 +71,8 @@
                 
 
     ?>
-    <button onclick="window.location.href='CriarPD.php'">Voltar a criar perguntar discursiva</button>
-    <button onclick="window.location.href='CriarPM.php'">Voltar a criar perguntar objetiva</button>
-    <button  onclick="window.location.href='index.php'">Voltar ao inicio </button>
+    <button onclick="window.location.href='CriarPD.php'">Voltar a criar perguntas discursivas</button>
+    <button onclick="window.location.href='CriarPM.php'">Voltar a criar perguntas objetivas</button>
+    <button  onclick="window.location.href='index.php'<?php $_SESSION['logado']=false;?>">Voltar ao inicio </button>
 </body>
 </html>

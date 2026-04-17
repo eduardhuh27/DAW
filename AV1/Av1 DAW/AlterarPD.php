@@ -94,7 +94,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="style.css">
     <title>ALterar pergunta discursiva</title>
 </head>
 <body>
@@ -115,7 +115,7 @@
     </form>
     <?php endif;?>
     <button onclick="window.location.href='CriarPD.php'">Voltar a criação de perguntas</button>
-    <button  onclick="window.location.href='index.php'">Voltar ao inicio </button>
+    <button  onclick="window.location.href='index.php'<?php $_SESSION['logado']=false;?>">Voltar ao inicio </button>
      <?php
     if($_SESSION['erro'])
         {

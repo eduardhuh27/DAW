@@ -43,7 +43,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="style.css">
     <title>Criar pergunta objetiva</title>
 </head>
 <body>
@@ -62,6 +62,6 @@
 <button onclick="window.location.href='AlterarPM.php'">Alterar perguntar objetiva</button>
 <button onclick="window.location.href='ExibirP.php'">Exibir perguntas </button>
 <button onclick="window.location.href='ExibirUmaP.php'">Exibir pergunta</button>
-<button  onclick="window.location.href='index.php'">Voltar ao inicio </button>
+<button  onclick="window.location.href='index.php'<?php $_SESSION['logado']=false;?>">Voltar ao inicio </button>
 </body>
 </html>

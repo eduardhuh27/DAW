@@ -38,7 +38,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="style.css">
     <title>Criar pergunta discursiva</title>
 </head>
 <body>
@@ -51,6 +51,6 @@
   <button onclick="window.location.href='AlterarPD.php'">Alterar perguntar discursiva</button>
   <button onclick="window.location.href='ExibirUmaP.php'">Exibir pergunta</button>
   <button onclick="window.location.href='ExibirP.php'">Exibir perguntas e respostas </button>
-<button  onclick="window.location.href='index.php'">Voltar ao inicio </button>
+<button  onclick="window.location.href='index.php' <?php $_SESSION['logado']=false;?>">Voltar ao inicio </button>
 </body>
 </html>
