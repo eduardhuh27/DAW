@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="style.css">
+         <script>
+   function calcular()
+    {
+        //pega os valores do form
+        let x= document.getElementById('x').value;
+        let y =document.getElementById('y').value;
+        let operacao= document.getElementById('opcao').value;
+    
+        
+        
+        //instancia o XMLhttp para fazer a requisição
+        let xhttp= new XMLHttpRequest();
+        xhttp.onreadystatechange=function()
+        {
+            console.log("1");
+            if(this.readyState==4 && this.status==200 )
+            {   
+                try {
+                //converte o conteudo mandado pelo PHP em JSON
+                let resposta = JSON.parse(this.responseText);
+                let divResultado = document.getElementById("resultado");
+            let boxResultado = document.getElementById("boxResultado");
+            
+            // Mostra a caixa de resultado que estava escondida
+            boxResultado.style.display = "block";
+                
+                
+                if(resposta.sucesso === true) {
+                    //Manda pra tag com id resultado que irá exibir as infos abaixo
+                    document.getElementById("resultado").innerHTML = resposta.resultado;
+                    document.getElementById("resultado").style.color = "red";
+                   
+                    console.log("2");
+                    console.log("Resposta do PHP: " + this.responseText)
+                }
+            else
+            {
+                //Manda pra tag com id resultado que irá exibir as infos abaixo
+                document.getElementById("resultado").innerHTML = resposta.mensagem;
+                document.getElementById("resultado").style.color = "brown";
+            }
+        }
+        catch(erro) {
+           //Manda pra tag com id resultado que irá exibir as infos abaixo
+            document.getElementById("resultado").innerHTML = "Erro ao processar a resposta do servidor.";
+        }
+    }
+    else
+    {           if(this.readyState<4)
+                { 
+                    console.log("5 (Carregando...)");
+                    //Manda pra tag com id resultado que irá exibir as infos abaixo
+                    document.getElementById("resultado").innerHTML = "Calculando...";
+                    
+                } 
+                else{
+                    console.log("6 (Erro HTTP: " + this.status + ")");
+                    //Manda pra tag com id resultado que irá exibir as infos abaixo
+                    document.getElementById("resultado").innerHTML = "<span style='color:red;'>Erro de conexão: " + this.status + "</span>";
+                }
+    }        
+        }   
+        //Abre a requisição para essa url
+        xhttp.open("GET","http://localhost/PHP/3DAW/AV1/Calculadora/calculadoraV2.php?a="+x+"&b="+y+"&operador="+operacao,true);
+        //Manda a requisição
+        xhttp.send();
+
+    }                 
+    
+
+</script>
+    </head>
+    <body  >
+        <div class="formulario">
+            Minha Calculadora!  
+            <form method="get" action="" >
+                <input type="number" id="x" name="a"
+                placeholder="Primeiro numero">
+                <input type="number" id="y" name="b"
+                placeholder="Segundo numero">
+                <br>
+                <select id="opcao" name="operador">
+                    <option  value="soma">Somar</option>
+                    <option value="subtracao">Subtrair</option>
+                    <option  value="multiplicação">Multiplicar</option>
+                    <option  value="divisao">Dividir</option>
+                    <option  value="potencia">Potência</option>
+                    <option  value="raiz">Raiz</option>
+                </select>
+                <button type="button" onclick="calcular()">Calcular</button>
+          
+            </form>
+            <br>
+            <div id="boxResultado" style="display: none; width: 100%; text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px dashed #ccc;">
+                <h3 style="color: #0a7df0; margin-bottom: 10px;">Resultado:</h3>
+                <div id="resultado" style="font-size: 2rem; font-weight: bold;"></div>
+            </div>
+        </div>
+</body>
+</html>
