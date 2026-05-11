@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+  flex-direction: column; 
+  align-items: center;   
+  justify-content: center;
+  gap: 15px;           
+  
+  min-height: 100vh;
+        }
+    </style>
+    <script>
+        function calcular(){
+
+        let a= Number(document.getElementById("a").value);
+        let b= Number(document.getElementById("b").value);
+        let operador= document.getElementById("op").value;
+        let result=0;
+        console.log(a+b+operador);
+
+
+        if(operador=="+")
+        {
+            document.getElementById("msg").innerHTML="Calcular a: "+a+operador+"b: "+b
+            result=a+b;
+        }
+        
+        if(operador=="-")
+        {
+            document.getElementById("msg").innerHTML="Calcular a: "+a+operador+"b: "+b
+           result=a-b;
+        }
+        if(operador=="*")
+        {
+            document.getElementById("msg").innerHTML="Calcular a: "+a+operador+"b: "+b
+             result=a*b;            
+        }
+        if(operador=="/")
+        {
+            if(b==0){
+                document.getElementById("msg").innerHTML="Não se divide por 0";
+                return;
+            }
+            document.getElementById("msg").innerHTML="Calcular a: "+a+operador+" b: "+b
+            result=a/b;
+        }
+        document.getElementById("resultado").innerHTML=result;
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <div>
+        <input type="text" placeholder="a" id="a">
+        <br>
+        <input type="text" placeholder="operação" id="op">
+        <br>
+        <input type="text" placeholder="b" id="b">
+        <br>
+        <button onclick="calcular()">Calcular</button>
+  
+    <p id="msg"></p>
+    <h1>
+        <p id="resultado"></p>
+    </h1>
+</div>
+</body>
+</html>
