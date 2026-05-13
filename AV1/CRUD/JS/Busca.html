@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style2.css">
+    <script>
+        function busca(){
+            let matricula= document.getElementById("matricula").value;
+          //instancia o XMLhttp para fazer a requisição
+            let xhttp= new XMLHttpRequest();
+            xhttp.onreadystatechange=function()
+            {
+                console.log("1");
+                if(this.readyState==4 && this.status==200 )
+                {   
+                    try {
+                    //converte o conteudo mandado pelo PHP em JSON
+                    let resposta = JSON.parse(this.responseText);
+                let boxResultado = document.getElementById("boxResultado");
+                
+                // Mostra a caixa de resultado que estava escondida
+                boxResultado.style.display = "block";
+                    
+                    
+                    if(resposta.sucesso === true) {
+                        //Manda pra tag com id resultado que irá exibir as infos abaixo
+                        document.getElementById("resultado").innerHTML = resposta.mensagem;//+resposta.aluno;
+                        document.getElementById("resultado").style.color = "red";
+                       
+                        console.log("2");
+                        console.log("Resposta do PHP: " + this.responseText)
+                    }
+                else
+                {
+                    //Manda pra tag com id resultado que irá exibir as infos abaixo
+                    document.getElementById("resultado").innerHTML = resposta.mensagem;
+                    document.getElementById("resultado").style.color = "brown";
+                }
+            }
+            catch(erro) {
+               //Manda pra tag com id resultado que irá exibir as infos abaixo
+                document.getElementById("resultado").innerHTML = "Erro ao processar a resposta do servidor.";
+            }
+        }
+        else
+        {           if(this.readyState<4)
+                    { 
+                        console.log("5 (Carregando...)");
+                        //Manda pra tag com id resultado que irá exibir as infos abaixo
+                        document.getElementById("resultado").innerHTML = "Calculando...";
+                        
+                    } 
+                    else{
+                        console.log("6 (Erro HTTP: " + this.status + ")");
+                        //Manda pra tag com id resultado que irá exibir as infos abaixo
+                        document.getElementById("resultado").innerHTML = "<span style='color:red;'>Erro de conexão: " + this.status + "</span>";
+                    }
+        }        
+            }   
+            //Abre a requisição para essa url
+            xhttp.open("GET","http://localhost/PHP/3DAW/AV1/CRUD/Busca.php?matricula="+matricula,true);
+            //Manda a requisição
+            xhttp.send();
+        }
+    </script>
+</head>
+<body>
+    <form method="GET" action="">
+        Matricula:<input type="text" placeholder="Busca" id="matricula" name="matricula">
+        <button  class ="botao" type="button" onclick="busca()" >Buscar</button>
+    </form>
+    <br>
+    <button class ="menu" onclick="window.location.href='index.html';">Voltar ao cadastro</button>
+     <button class ="menu" onclick="window.location.href='alterar.html';">Alterar aluno</button>
+    <p>
+       <div id='boxResultado' class="resultado-box" style="display: none;">
+               <div id='resultado'></div>
+            </div>
+    </p>
+</body>
+</html>

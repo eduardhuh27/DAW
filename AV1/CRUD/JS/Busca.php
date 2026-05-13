@@ -1,0 +1,69 @@
+<?php session_start();?>
+<?php
+    if ($_SERVER['REQUEST_METHOD'] == 'GET')
+    {
+        $procurado=filter_input(INPUT_GET,"matricula",FILTER_SANITIZE_NUMBER_FLOAT);
+        
+        
+        $arquivo=fopen("alunos.txt","r");
+
+        fgetcsv($arquivo, 0, ";");
+
+        $achou=false;
+
+        while(($dados = fgetcsv($arquivo, 0, ";")) !== FALSE)
+        {
+        
+            if($dados[1]==$procurado)
+            {
+                $achou=true;
+                $_SESSION['procura']=$procurado;
+                $_SESSION['dados']=$dados[0];
+                fclose($arquivo);
+                echo json_encode(["sucesso" => true,"mensagem" => "Aluno encontrado com sucesso: ".$dados[0]]);
+                exit;
+            }
+        }
+
+        if(!$achou)
+            {
+                echo json_encode(["sucesso" => false, "mensagem" => "Aluno não encontrado."]);
+                        exit;
+            }
+    
+}
+/*
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="styleb.css">
+    </head>
+    <body>
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+            Matricula:<input type="text" placeholder="Busca" name="procurado">
+            <input type="submit">
+        </form>
+        <br>
+        <button onclick="window.location.href='index.html';">Voltar ao cadastro</button>
+        <button onclick="window.location.href='alterar.html';">Alterar aluno</button>
+        <p>
+            
+        <?php 
+        if(isset($_SESSION['encontrou']))
+            {
+                echo $_SESSION['encontrou'].$_SESSION['dados'];
+                unset($_SESSION['encontrou']);
+                }
+                if(isset($_SESSION['naoEncontrou']))
+                    {
+                        echo $_SESSION['naoEncontrou'];
+                        unset($_SESSION['naoEncontrou']);
+                        }
+                        ?>
+                        </p>
+</body>
+</html>
+                        */?>

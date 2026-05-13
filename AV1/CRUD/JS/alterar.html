@@ -1,0 +1,121 @@
+
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Aluno</title>
+    <link rel="stylesheet" href="stylea.css">
+     <script>
+        function aleterarAluno(){
+
+            let nome=document.getElementById('nome').value
+            let matricula=document.getElementById('matricula').value
+            let email=document.getElementById('email').value
+
+              function validarEmail(email) 
+        {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
+        function validarNome(nome)
+        {
+            if(nome.length >0)
+            {
+                return true;
+            }
+            return false;
+        }
+        function validarMatricula(matricula)
+        {
+            if(matricula>=1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        if(validarEmail(email) && validarNome(nome) && validarMatricula(matricula)){
+          //instancia o XMLhttp para fazer a requisição
+        let xhttp= new XMLHttpRequest();
+        xhttp.onreadystatechange=function()
+        {
+            console.log("1");
+            if(this.readyState==4 && this.status==200 )
+            {   
+                try {
+                //converte o conteudo mandado pelo PHP em JSON
+                let resposta = JSON.parse(this.responseText);
+                let divResultado = document.getElementById("resultado");
+            let boxResultado = document.getElementById("boxResultado");
+            
+            // Mostra a caixa de resultado que estava escondida
+            boxResultado.style.display = "block";
+                
+                
+                if(resposta.sucesso === true) {
+                    //Manda pra tag com id resultado que irá exibir as infos abaixo
+                    document.getElementById("resultado").innerHTML = resposta.mensagem;
+                    document.getElementById("resultado").style.color = "red";
+                   
+                    console.log("2");
+                    console.log("Resposta do PHP: " + this.responseText)
+                }
+            else
+            {
+                //Manda pra tag com id resultado que irá exibir as infos abaixo
+                document.getElementById("resultado").innerHTML = resposta.mensagem;
+                document.getElementById("resultado").style.color = "brown";
+            }
+        }
+        catch(erro) {
+           //Manda pra tag com id resultado que irá exibir as infos abaixo
+            document.getElementById("resultado").innerHTML = "Erro ao processar a resposta do servidor.";
+        }
+    }
+    else
+    {           if(this.readyState<4)
+                { 
+                    console.log("5 (Carregando...)");
+                    //Manda pra tag com id resultado que irá exibir as infos abaixo
+                    document.getElementById("resultado").innerHTML = "Calculando...";
+                    
+                } 
+                else{
+                    console.log("6 (Erro HTTP: " + this.status + ")");
+                    //Manda pra tag com id resultado que irá exibir as infos abaixo
+                    document.getElementById("resultado").innerHTML = "<span style='color:red;'>Erro de conexão: " + this.status + "</span>";
+                }
+    }        
+        }   
+        //Abre a requisição para essa url
+        xhttp.open("GET","http://localhost/PHP/3DAW/AV1/CRUD/alterar.php?matricula="+matricula+"&nome="+nome+"&email="+email,true);
+        //Manda a requisição
+        xhttp.send();
+    }
+    }                 
+    </script>
+</head>
+<body>
+<h1>Cadastrar novos alunos</h1>
+<form  method="GET" action="">
+    Nome: <input type="text"id="nome" name="nome">
+    <br><br>
+    Matricula: <input type="text" id="matricula" name="matricula">
+    <br><br>
+    Email: <input type="text"id="email" name="email">
+    <br><br>
+</form>
+<button id="botao" type="button"  onclick="aleterarAluno()">Alterar Aluno</button> 
+<button onclick="window.location.href='index.html';">Voltar
+</button>
+<p>
+
+           <div id='boxResultado' style="display: none;">
+               <div id='resultado'></div>
+            </div>
+             
+</p>
+<br>
+</body>
+</html>
