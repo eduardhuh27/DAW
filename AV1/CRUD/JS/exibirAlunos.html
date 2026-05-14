@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exibir Alunos</title>
+    <link rel="stylesheet" href="stylee.css"> 
+    
+    <script>
+        function exibir() {
+            let xhttp = new XMLHttpRequest();
+            
+            xhttp.onreadystatechange = function() {
+                let divResultado = document.getElementById("resultado");
+                let boxResultado = document.getElementById("boxResultado");
+
+                if (this.readyState == 4 && this.status == 200) {   
+                    try {
+                        let resposta = JSON.parse(this.responseText);
+                        boxResultado.style.display = "block";
+                        
+                        if (resposta.sucesso === true) {
+                            divResultado.innerHTML = resposta.html;
+                        } else {
+                            divResultado.innerHTML = resposta.mensagem;
+                        }
+                    } catch (erro) {
+                        boxResultado.style.display = "block";
+                        divResultado.innerHTML = "Erro ao processar a resposta do servidor.";
+                        divResultado.style.color = "red";
+                        console.error(this.responseText);
+                    }
+                } else if (this.readyState < 4) { 
+                    boxResultado.style.display = "block";
+                    divResultado.innerHTML = "Carregando tabela...";
+                } else {
+                    boxResultado.style.display = "block";
+                    divResultado.innerHTML = "<span style='color:red;'>Erro de conexão: " + this.status + "</span>";
+                }
+            };   
+            
+            
+            xhttp.open("GET", "http://localhost/PHP/3DAW/AV1/CRUD/exibirAlunos.php", true);
+            xhttp.send();
+        }
+    </script>
+</head>
+
+<body onload="exibir()">
+    
+    <br><br>
+    <div id='boxResultado' class="resultado-box" style="display: none;">
+        <div id='resultado'></div>
+    </div>
+    <button class="menu" onclick="window.location.href='index.html';">Voltar ao cadastro</button>
+    <br>
+</body>
+</html>
