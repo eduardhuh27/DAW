@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css"> <title>Criar Pergunta Discursiva</title>
+    
+    <script>
+        function criarPD(event) {
+           
+            event.preventDefault();
+
+         
+            let id = document.getElementById('idPergunta').value;
+            let pergunta = document.getElementById('pergunta').value;
+            let resposta = document.getElementById('resposta').value;
+            let divResultado = document.getElementById('resultado');
+
+            
+            if (id === "" || pergunta.trim() === "" || resposta.trim() === "") {
+                divResultado.innerHTML = "Por favor, preencha todos os campos.";
+                divResultado.style.color = "red";
+                return;
+            }
+
+     
+
+            let xhttp = new XMLHttpRequest();
+            
+            xhttp.onreadystatechange = () => {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let res = JSON.parse(this.responseText);
+                        
+                        if (res.sucesso === true) {
+                            divResultado.innerHTML = res.mensagem;
+                            divResultado.style.color = "green";
+                            
+                        
+                            document.getElementById('idPergunta').value = "";
+                            document.getElementById('pergunta').value = "";
+                            document.getElementById('resposta').value = "";
+                        } else {
+                            divResultado.innerHTML = res.mensagem;
+                            divResultado.style.color = "brown";
+                        }
+                    } catch (erro) {
+                        divResultado.innerHTML = "Erro ao processar a resposta do servidor.";
+                        divResultado.style.color = "red";
+                        console.error(this.responseText);
+                    }
+                } else if (this.readyState == 4) {
+                    divResultado.innerHTML = "Erro de conexão: " + this.status;
+                    divResultado.style.color = "red";
+                }
+            };
+
+            
+            xhttp.open("POST", "processaCriarPD.php", true);
+            
+            
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            
+         
+            xhttp.send("id=" + encodeURIComponent(id) + "&pergunta=" + encodeURIComponent(pergunta) + "&resposta=" + encodeURIComponent(resposta));
+        }
+    </script>
+</head>
+<body>
+
+    <form onsubmit="criarPD(event)">
+        <input type="number" placeholder="Id" id="idPergunta" name="id" required>
+        <input type="text" placeholder="Cabeçalho da pergunta" id="pergunta" name="pergunta" required>
+        <input type="text" placeholder="Modelo de resposta" id="resposta" name="resposta" required>
+        <button type="submit" class="botao">Criar pergunta discursiva</button>
+    </form>    
+    
+    <div id="resultado" style="font-weight: bold; margin-top: 15px; margin-bottom: 15px; text-align: center;"></div>
+
+    <button class="menu" onclick="window.location.href='AlterarPD.html'">Alterar pergunta discursiva</button>
+    <button class="menu" onclick="window.location.href='ExibirUmaP.html'">Exibir pergunta</button>
+    <button class="menu" onclick="window.location.href='ExibirP.html'">Exibir perguntas e respostas</button>
+    
+    <button class="menu" onclick="window.location.href='index.html'">Voltar ao inicio</button>
+
+</body>
+</html>

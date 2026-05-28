@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Responder</title>
+    <script>
+        function buscar(tipo) {
+            let id = document.getElementById("inputId").value;
+            let res = document.getElementById("resultadoMsg");
+            
+            res.innerHTML = "A processar...";
+            res.style.color = "black";
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let obj = JSON.parse(this.responseText);
+                        
+                        if (obj.sucesso) {
+                            document.getElementById("formBusca").style.display = "none";
+                            res.innerHTML = "";
+                            
+                            if (tipo === 'D') {
+                                document.getElementById("formDisc").style.display = "block";
+                                document.getElementById("idD").value = obj.dados.id;
+                                document.getElementById("perguntaD").value = obj.dados.pergunta;
+                                document.getElementById("respostaD").value = "";
+                            } else {
+                                document.getElementById("formObj").style.display = "block";
+                                document.getElementById("idO").value = obj.dados.id;
+                                document.getElementById("perguntaO").value = obj.dados.pergunta;
+                                document.getElementById("aO").value = "(A) " + obj.dados.a;
+                                document.getElementById("bO").value = "(B) " + obj.dados.b;
+                                document.getElementById("cO").value = "(C) " + obj.dados.c;
+                                document.getElementById("dO").value = "(D) " + obj.dados.d;
+                                document.getElementById("eO").value = "(E) " + obj.dados.e;
+                                document.getElementById("respostaO").value = "";
+                            }
+                        } else {
+                            res.innerHTML = obj.mensagem;
+                            res.style.color = "red";
+                        }
+                    } catch (e) {
+                        res.innerHTML = "Erro de processamento.";
+                        res.style.color = "brown";
+                    }
+                }
+            };
+            xhttp.open("POST", "processaResponder.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("acao=buscar&tipo=" + tipo + "&id=" + encodeURIComponent(id));
+        }
+
+        function responder(tipo) {
+            let id = tipo === 'D' ? document.getElementById("idD").value : document.getElementById("idO").value;
+            let resposta = tipo === 'D' ? document.getElementById("respostaD").value : document.getElementById("respostaO").value;
+            let res = document.getElementById("resultadoMsg");
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let obj = JSON.parse(this.responseText);
+                        res.innerHTML = obj.mensagem;
+                        res.style.color = obj.sucesso ? "green" : "red";
+                    } catch (e) {
+                        res.innerHTML = "Erro de processamento.";
+                        res.style.color = "brown";
+                    }
+                }
+            };
+            xhttp.open("POST", "processaResponder.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("acao=responder&tipo=" + tipo + "&id=" + encodeURIComponent(id) + "&resposta=" + encodeURIComponent(resposta));
+        }
+
+        function voltar() {
+            document.getElementById("formBusca").style.display = "block";
+            document.getElementById("formDisc").style.display = "none";
+            document.getElementById("formObj").style.display = "none";
+            document.getElementById("resultadoMsg").innerHTML = "";
+            document.getElementById("inputId").value = "";
+        }
+    </script>
+</head>
+<body>
+    <h3 id="resultadoMsg"></h3>
+
+    <div id="formBusca">
+        <h1>Escolha pergunta pelo id</h1>
+        <form onsubmit="event.preventDefault();">
+            <input type="number" placeholder="id" id="inputId" required>
+            <button type="button" class="botao" onclick="buscar('D')">Escolher discursiva</button>
+            <button type="button" class="botao" onclick="buscar('O')" style="margin-top: 10px;">Escolher objetiva</button>
+        </form>
+        <button class="menu" onclick="window.location.href='index.html'">Voltar ao inicio</button>
+    </div>
+
+    <div id="formDisc" style="display: none;">
+        <form onsubmit="event.preventDefault(); responder('D');">
+            <input type="number" id="idD" readonly>
+            <input type="text" id="perguntaD" readonly>
+            <input type="text" placeholder="Resposta" id="respostaD" required>
+            <button type="submit" class="botao">Responder</button>
+            <button type="button" class="menu" onclick="voltar()">Voltar</button>
+        </form>
+    </div>
+
+    <div id="formObj" style="display: none;">
+        <form onsubmit="event.preventDefault(); responder('O');">
+            <input type="number" id="idO" readonly>
+            <input type="text" id="perguntaO" readonly>
+            <input type="text" placeholder="Responder com a alternativa (A, B, C, D, E)" id="respostaO" required>
+            <input type="text" id="aO" readonly>
+            <input type="text" id="bO" readonly>
+            <input type="text" id="cO" readonly>
+            <input type="text" id="dO" readonly>
+            <input type="text" id="eO" readonly>
+            <button type="submit" class="botao">Responder</button>
+            <button type="button" class="menu" onclick="voltar()">Voltar</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Exibir pergunta</title>
+    <script>
+        function buscarPergunta(tipo, event) {
+            event.preventDefault();
+            
+            let id = document.getElementById("idPergunta").value;
+            let divResultado = document.getElementById("resultado");
+
+            if (id === "") {
+                divResultado.innerHTML = "Por favor, insira o ID da pergunta.";
+                divResultado.style.color = "red";
+                return;
+            }
+
+            divResultado.innerHTML = "Buscando...";
+            divResultado.style.color = "blue";
+
+            let xhttp = new XMLHttpRequest();
+            
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let res = JSON.parse(this.responseText);
+                        
+                        if (res.sucesso) {
+                            divResultado.innerHTML = res.html;
+                            divResultado.style.color = "black";
+                        } else {
+                            divResultado.innerHTML = res.mensagem;
+                            divResultado.style.color = "brown";
+                        }
+                    } catch (erro) {
+                        divResultado.innerHTML = "Erro ao processar a resposta do servidor.";
+                        divResultado.style.color = "red";
+                    }
+                } else if (this.readyState == 4) {
+                    divResultado.innerHTML = "Erro de conexão: " + this.status;
+                    divResultado.style.color = "red";
+                }
+            };
+            
+            xhttp.open("POST", "processaExibirUmaP.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("id=" + encodeURIComponent(id) + "&tipo=" + encodeURIComponent(tipo));
+        }
+    </script>
+</head>
+<body>
+    <form>
+        <h1>Insira o Id da pergunta a ser exibida</h1>
+        <input type="number" placeholder="id" id="idPergunta" required>
+        <button class="botao" onclick="buscarPergunta('objetiva', event)">Buscar objetiva</button>
+        <button class="botao" onclick="buscarPergunta('discursiva', event)">Buscar Discursiva</button>
+    </form>
+
+    <div id="resultado" style="margin-top: 20px; margin-bottom: 20px; text-align: center; font-weight: bold;"></div>
+
+    <button class="menu" onclick="window.location.href='CriarPD.html'">Voltar a criar perguntas discursivas</button>
+    <button class="menu" onclick="window.location.href='CriarPM.html'">Voltar a criar perguntas objetivas</button>
+    <button class="menu" onclick="window.location.href='index.html'">Voltar ao inicio</button>
+</body>
+</html>

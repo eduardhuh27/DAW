@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Alterar pergunta objetiva</title>
+    <script>
+        function executarAcao(acao) {
+            let dadosUrlEncoded = "";
+            let resultadoMsg = document.getElementById("resultadoMsg");
+            resultadoMsg.style.color = "black";
+            resultadoMsg.innerHTML = "A processar...";
+
+            if (acao === 'buscar') {
+                let idBusca = document.getElementById("inputIdBusca").value;
+                dadosUrlEncoded = "acao=buscar&id=" + encodeURIComponent(idBusca);
+            } else if (acao === 'atualizar') {
+                let id = document.getElementById("inputId").value;
+                let pergunta = document.getElementById("inputPergunta").value;
+                let resposta = document.getElementById("inputResposta").value;
+                let a = document.getElementById("inputA").value;
+                let b = document.getElementById("inputB").value;
+                let c = document.getElementById("inputC").value;
+                let d = document.getElementById("inputD").value;
+                let e = document.getElementById("inputE").value;
+                
+                dadosUrlEncoded = "acao=atualizar&id=" + encodeURIComponent(id) + 
+                                  "&pergunta=" + encodeURIComponent(pergunta) + 
+                                  "&resposta=" + encodeURIComponent(resposta) +
+                                  "&a=" + encodeURIComponent(a) +
+                                  "&b=" + encodeURIComponent(b) +
+                                  "&c=" + encodeURIComponent(c) +
+                                  "&d=" + encodeURIComponent(d) +
+                                  "&e=" + encodeURIComponent(e);
+            } else if (acao === 'deletar') {
+                let id = document.getElementById("inputId").value;
+                dadosUrlEncoded = "acao=deletar&id=" + encodeURIComponent(id);
+            }
+
+            let xhttp = new XMLHttpRequest();
+            
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let respostaJson = JSON.parse(this.responseText);
+                        
+                        if (respostaJson.sucesso === true) {
+                            if (acao === 'buscar') {
+                                document.getElementById("formBuscar").style.display = "none";
+                                document.getElementById("formAcoes").style.display = "block";
+                                
+                                document.getElementById("inputId").value = respostaJson.dados.id;
+                                document.getElementById("inputPergunta").value = respostaJson.dados.pergunta;
+                                document.getElementById("inputResposta").value = respostaJson.dados.resposta;
+                                document.getElementById("inputA").value = respostaJson.dados.a;
+                                document.getElementById("inputB").value = respostaJson.dados.b;
+                                document.getElementById("inputC").value = respostaJson.dados.c;
+                                document.getElementById("inputD").value = respostaJson.dados.d;
+                                document.getElementById("inputE").value = respostaJson.dados.e;
+                                
+                                resultadoMsg.innerHTML = "";
+                            } else {
+                                resultadoMsg.style.color = "green";
+                                resultadoMsg.innerHTML = respostaJson.mensagem;
+                                resetarTela();
+                            }
+                        } else {
+                            resultadoMsg.style.color = "red";
+                            resultadoMsg.innerHTML = respostaJson.mensagem;
+                        }
+                    } catch (erro) {
+                        resultadoMsg.style.color = "brown";
+                        resultadoMsg.innerHTML = "Erro ao processar a resposta do servidor.";
+                    }
+                } else if (this.readyState == 4 && this.status != 200) {
+                    resultadoMsg.style.color = "red";
+                    resultadoMsg.innerHTML = "Erro de conexão: " + this.status;
+                }
+            };
+
+            xhttp.open("POST", "ProcessaAlterarPM.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(dadosUrlEncoded);
+        }
+
+        function resetarTela() {
+            document.getElementById("formBuscar").style.display = "block";
+            document.getElementById("formAcoes").style.display = "none";
+            document.getElementById("inputIdBusca").value = "";
+        }
+    </script>
+</head>
+<body>
+    <h3 id="resultadoMsg"></h3>
+
+    <form id="formBuscar" onsubmit="event.preventDefault();">
+        <h1>Insira o Id da pergunta a ser alterada</h1>
+        <input type="number" placeholder="id" id="inputIdBusca" required>
+        <button type="submit" onclick=" executarAcao('buscar');" class="botao">Buscar</button>
+    </form>
+
+    <form id="formAcoes" style="display: none;" onsubmit="event.preventDefault();">
+        <input type="number" id="inputId" readonly>
+        <input type="text" placeholder="Cabeçalho da pergunta" id="inputPergunta" required>
+        <input type="text" placeholder="A" id="inputA" required>
+        <input type="text" placeholder="B" id="inputB" required>
+        <input type="text" placeholder="C" id="inputC" required>
+        <input type="text" placeholder="D" id="inputD" required>
+        <input type="text" placeholder="E" id="inputE" required>
+        <input type="text" placeholder="Resposta correta" id="inputResposta" required>
+        <button type="button" class="botao" onclick="executarAcao('atualizar')">Atualizar</button>
+        <button type="button" class="botao" onclick="executarAcao('deletar')" style="margin-top: 10px; background-color: #dc3545;">Deletar</button>
+    </form>
+
+    <button class="menu" onclick="window.location.href='CriarPM.html'">Voltar a criação de perguntas</button>
+    <button class="menu" onclick="window.location.href='index.html'">Voltar ao inicio</button>
+</body>
+</html>

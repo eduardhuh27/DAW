@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Início</title>
+    <script>
+        function login(event) {
+            // Evita que a página recarregue ao clicar no botão
+            event.preventDefault();
+
+            let nome = document.getElementById('nome').value;
+            let senha = document.getElementById('senha').value;
+            let email = document.getElementById('email').value;
+            let divResultado = document.getElementById("resultado");
+
+            function validarEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(String(email).toLowerCase());
+            }
+            function validarNome(nome) {
+                return nome.length > 0;
+            }
+            function validarSenha(senha) {
+                return senha.length >= 3;
+            }
+
+            if (validarEmail(email) && validarNome(nome) && validarSenha(senha)) {
+                
+
+                let xhttp = new XMLHttpRequest();
+                
+                xhttp.onreadystatechange = () => {
+                    if (this.readyState == 4 && this.status == 200) {   
+                        try {
+                            let resposta = JSON.parse(this.responseText);
+                            
+                            if (resposta.sucesso === true) {
+                              
+                                document.getElementById("areaLogin").style.display = "none";
+                                
+                                document.getElementById("areaMenu").style.display = "block";
+                                
+                                
+                                document.getElementById("mensagemSucesso").innerHTML = resposta.mensagem;
+                                divResultado.innerHTML = ""; 
+                            } else {
+                                
+                                divResultado.innerHTML = resposta.mensagem;
+                                divResultado.style.color = "red";
+                            }
+                        } catch(erro) {
+                            divResultado.innerHTML = "Erro ao processar a resposta do servidor.";
+                            divResultado.style.color = "brown";
+                            console.error(this.responseText);
+                        }
+                    } else if (this.readyState == 4) {
+                        divResultado.innerHTML = "Erro de conexão: " + this.status;
+                        divResultado.style.color = "red";
+                    }
+                };   
+                
+                
+                xhttp.open("POST", "processaIndex.php", true);
+                
+               
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                
+                xhttp.send("nome=" + encodeURIComponent(nome) + "&email=" + encodeURIComponent(email) + "&senha=" + encodeURIComponent(senha));
+            
+            } else {
+                divResultado.innerHTML = "Preencha todos os campos.";
+                divResultado.style.color = "red";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="areaLogin">
+        <form onsubmit="login(event)">
+            <input type="text" placeholder="Nome" id="nome" name="nome">
+            <input type="email" placeholder="Email" id="email" name="email">
+            <input type="password" placeholder="Senha" id="senha" name="senha">
+            <button type="submit">Entrar</button>
+        </form>
+        <div id="resultado"></div>
+    </div>
+
+    <div id="areaMenu" style="display: none;">
+        <h1 id="mensagemSucesso"></h1>
+        <button class="botao" onclick="window.location.href='CriarPD.html'">Criar pergunta discursiva</button>
+        <button class="botao" onclick="window.location.href='CriarPM.html'">Criar pergunta objetiva</button>
+        <button class="botao" onclick="window.location.href='Responder.html'">Responder perguntas</button>
+    </div>
+</body>
+</html>
