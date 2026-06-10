@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Criar pergunta objetiva</title>
+    
+    <script>
+        function criarPM(event) {
+            event.preventDefault();
+
+            let id = document.getElementById('idPergunta').value;
+            let pergunta = document.getElementById('pergunta').value;
+            let oA = document.getElementById('opA').value;
+            let oB = document.getElementById('opB').value;
+            let oC = document.getElementById('opC').value;
+            let oD = document.getElementById('opD').value;
+            let oE = document.getElementById('opE').value;
+            let resposta = document.getElementById('resposta').value;
+            
+            let divResultado = document.getElementById('resultado');
+
+            if (!id || !pergunta.trim() || !oA.trim() || !oB.trim() || !oC.trim() || !oD.trim() || !oE.trim() || !resposta.trim()) {
+                divResultado.innerHTML = "Por favor, preencha todos os campos.";
+                divResultado.style.color = "red";
+                return;
+            }
+
+            let xhttp = new XMLHttpRequest();
+            
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let res = JSON.parse(this.responseText);
+                        
+                        if (res.sucesso === true) {
+                            divResultado.innerHTML = res.mensagem;
+                            divResultado.style.color = "green";
+                            
+                            document.getElementById('idPergunta').value = "";
+                            document.getElementById('pergunta').value = "";
+                            document.getElementById('opA').value = "";
+                            document.getElementById('opB').value = "";
+                            document.getElementById('opC').value = "";
+                            document.getElementById('opD').value = "";
+                            document.getElementById('opE').value = "";
+                            document.getElementById('resposta').value = "";
+                        } else {
+                            divResultado.innerHTML = res.mensagem;
+                            divResultado.style.color = "brown";
+                        }
+                    } catch (erro) {
+                        divResultado.innerHTML = "Erro ao processar a resposta do servidor.";
+                        divResultado.style.color = "red";
+                        console.error(this.responseText);
+                    }
+                } else if (this.readyState == 4) {
+                    divResultado.innerHTML = "Erro de conexão: " + this.status;
+                    divResultado.style.color = "red";
+                }
+            };
+
+            xhttp.open("POST", "processaCriarPM.php", true);
+            
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            
+            let dadosUrlEncoded = "id=" + encodeURIComponent(id) + 
+                                  "&pergunta=" + encodeURIComponent(pergunta) + 
+                                  "&a=" + encodeURIComponent(oA) + 
+                                  "&b=" + encodeURIComponent(oB) + 
+                                  "&c=" + encodeURIComponent(oC) + 
+                                  "&d=" + encodeURIComponent(oD) + 
+                                  "&e=" + encodeURIComponent(oE) + 
+                                  "&resposta=" + encodeURIComponent(resposta);
+            
+            xhttp.send(dadosUrlEncoded);
+        }
+    </script>
+</head>
+<body>
+    
+    <form onsubmit="criarPM(event)">
+        <input type="number" placeholder="Id" id="idPergunta" name="id" required>
+        <input type="text" placeholder="Cabeçalho da pergunta" id="pergunta" name="pergunta" required>
+        <br>
+        <input type="text" placeholder="A" id="opA" name="a" required>
+        <input type="text" placeholder="B" id="opB" name="b" required>
+        <input type="text" placeholder="C" id="opC" name="c" required>
+        <input type="text" placeholder="D" id="opD" name="d" required>
+        <input type="text" placeholder="E" id="opE" name="e" required>
+        <input type="text" placeholder="Resposta correta" id="resposta" name="resposta" required>
+        
+        <button type="submit" class="botao">Criar pergunta objetiva</button>
+    </form>
+    
+    <div id="resultado" style="font-weight: bold; margin-top: 15px; margin-bottom: 15px; text-align: center;"></div>
+
+    <button class="menu" onclick="window.location.href='AlterarPM.html'">Alterar pergunta objetiva</button>
+    <button class="menu" onclick="window.location.href='ExibirP.html'">Exibir perguntas</button>
+    <button class="menu" onclick="window.location.href='ExibirUmaP.html'">Exibir pergunta</button>
+    <button class="menu" onclick="window.location.href='index.html'">Voltar ao inicio</button>
+
+</body>
+</html>

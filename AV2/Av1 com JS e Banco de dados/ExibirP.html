@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Exibir perguntas e respostas</title>
+    <script>
+        function carregarPerguntas() {
+            let xhttp = new XMLHttpRequest();
+            
+            xhttp.onreadystatechange = function() {
+                let divResultado = document.getElementById("resultado");
+
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let res = JSON.parse(this.responseText);
+                        
+                        if (res.sucesso) {
+                            divResultado.innerHTML = res.html;
+                            divResultado.style.color = "black";
+                        } else {
+                            divResultado.innerHTML = res.mensagem;
+                            divResultado.style.color = "brown";
+                        }
+                    } catch (erro) {
+                        divResultado.innerHTML = "Erro ao processar a resposta do servidor.";
+                        divResultado.style.color = "red";
+                    }
+                } else if (this.readyState < 4) {
+                    divResultado.innerHTML = "Carregando tabelas...";
+                    divResultado.style.color = "blue";
+                } else {
+                    divResultado.innerHTML = "Erro de conexão: " + this.status;
+                    divResultado.style.color = "red";
+                }
+            };
+            
+            xhttp.open("POST", "ProcessaExibirPComDB.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send();
+        }
+    </script>
+</head>
+<body onload="carregarPerguntas()">
+    <div id="resultado" style="margin-bottom: 20px; text-align: center; font-weight: bold;"></div>
+    
+    <button class="menu" onclick="window.location.href='CriarPD.html'">Voltar a criar perguntas discursivas</button>
+    <button class="menu" onclick="window.location.href='CriarPM.html'">Voltar a criar perguntas objetivas</button>
+    <button class="menu" onclick="window.location.href='index.html'">Voltar ao inicio</button>
+</body>
+</html>
