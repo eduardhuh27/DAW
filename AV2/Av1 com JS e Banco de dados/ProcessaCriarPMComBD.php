@@ -10,12 +10,11 @@ try{
 $conn = new mysqli($host, $username, $password, $dbname);
 
 if ($conn->connect_error) {
+    echo json_encode(["sucesso"=>false,"mensagem"=> "Conexão realizada com sucesso!"]);
     die("Falha na conexão: " . $conn->connect_error);
 }
 
-echo json_encode(["sucesso"=>false,"mensagem"=> "Conexão realizada com sucesso!"]);
 
- 
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     if($comandoSQL)
         {
-            $comandoSQL->bind_param("i  ",$id,$pergunta,$resposta,$oA,$oB,$oC,$oD,$oE);
+            $comandoSQL->bind_param("isssssss",$id,$pergunta,$resposta,$oA,$oB,$oC,$oD,$oE);
 
             if($comandoSQL->execute())
                 {
