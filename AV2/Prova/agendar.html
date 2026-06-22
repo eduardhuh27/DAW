@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio V - Agendar Horário</title>
+
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <h2>STUDIO V</h2> 
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">Voltar ao Início</a></li>
+                <li><a href="agendamentos.html">Meus Agendamentos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="booking-section">
+        <div class="login-overlay"></div>
+        
+        <div class="login-card booking-card">
+            <h3 class="gold-text-cursive">O seu momento</h3>
+            <h2>AGENDAR SERVIÇO</h2>
+            
+            <form id="formAgendamento">
+                <div class="form-grid">
+                    
+                    <div class="campo full-width">
+                        <label for="servico">Serviço Desejado</label>
+                        <select id="servico" name="servico" required>
+                            <option value="" disabled selected>Selecione um serviço...</option>
+                            <option value="Corte Feminino" >Corte Feminino R$ 90.00</option>
+                            <option value="Corte Masculino">Corte Masculino R$ 50.00</option>
+                            <option value="Escova e Hidrataçao">Escova e Hidratação R$ 120.00</option>
+                            <option value="Coloracao">Coloração R$ 110.00</option>
+                            <option value="Manicure e Pedicure">Manicure e Pedicure R$ 60.00</option>
+                            <option value="Penteado">Penteado R$ 150.00</option>
+                            <option value="Maquiagem">Maquiagem R$ 140.00</option>
+                        </select>
+                    </div>
+
+                    <div class="campo full-width">
+                        <label for="profissional">Profissional</label>
+                        <select id="profissional" name="profissional" required>
+                            <option value="" disabled selected>Escolha o profissional...</option>
+                            <option value="Qualquer">Qualquer profissional disponível</option>
+                            <option value="Leila Diniz">Leila Diniz (Cabelo)</option>
+                            <option value="Carlos Bezerra">Carlos Bezerra (Cabelo/Barba)</option>
+                            <option value="Eliza Queiros">Eliza Queiros (Unhas)</option>
+                            <option value="Raquel Miranda">Raquel Miranda (Química)</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="data">Data</label>
+                        <input type="date" id="data" name="data" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="horario">Horário</label>
+                        <select id="horario" name="horario" required>
+                            <option value="" disabled selected>Selecione...</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn-gold full-width-btn">CONFIRMAR AGENDAMENTO</button>
+            </form>
+
+            <div id="resultadoAjax" style="margin-top: 15px; font-weight: bold; min-height: 24px;"></div>
+        </div>
+    </section>
+
+    <script>
+                
+        const tabelaPrecos = {
+            "Corte Feminino": 90.00,
+            "Corte Masculino": 50.00,
+            "Escova e Hidratação": 120.00,
+            "Coloração": 180.00,
+            "Manicure e Pedicure": 65.00,
+            "Penteado": 150.00,
+            "Maquiagem": 140.00
+        };
+
+      
+        let selectServico = document.getElementById("servico");
+        let displayValor = document.getElementById("valorExibicao");
+
+     
+        selectServico.addEventListener("change", function() {
+            let servicoEscolhido = this.value; 
+            let preco = tabelaPrecos[servicoEscolhido]; 
+            if (preco) {
+               
+                displayValor.innerText = "R$ " + preco.toFixed(2).replace(".", ",");
+            } else {
+                displayValor.innerText = "R$ 0,00";
+            }
+        });
+        
+        let inputData = document.getElementById('data');
+        let hoje = new Date().toISOString().split('T')[0];
+        inputData.setAttribute('min', hoje);
+
+        document.getElementById("formAgendamento").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let servico = document.getElementById("servico").value;
+            let valorFinal = tabelaPrecos[servico];
+            let profissional = document.getElementById("profissional").value;
+            let data = document.getElementById("data").value;
+            let horario = document.getElementById("horario").value;
+            
+            let divMsg = document.getElementById("resultadoAjax");
+
+            divMsg.innerHTML = "A processar agendamento...";
+            divMsg.style.color = "blue";
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let obj = JSON.parse(this.responseText);
+                        divMsg.innerHTML = obj.mensagem;
+                        
+                        if (obj.sucesso) {
+                            divMsg.style.color = "green";
+                            setTimeout(() => {
+                                window.location.href = "agendamentos.html";
+                            }, 2000);
+                        } else {
+                            divMsg.style.color = "red";
+                        }
+                    } catch (e) {
+                        divMsg.innerHTML = "Erro ao processar resposta do servidor.";
+                        divMsg.style.color = "brown";
+                        console.error(this.responseText);
+                    }
+                } else if (this.readyState == 4) {
+                    divMsg.innerHTML = "Erro de conexão com o banco de dados.";
+                    divMsg.style.color = "red";
+                }
+            };
+
+            xhttp.open("POST", "processaAgendar.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            
+            let dados = "servico=" + encodeURIComponent(servico) + 
+                        "&valor=" + encodeURIComponent(valorFinal) +
+                        "&profissional=" + encodeURIComponent(profissional) + 
+                        "&data=" + encodeURIComponent(data) + 
+                        "&horario=" + encodeURIComponent(horario);
+            
+            xhttp.send(dados);
+        });
+    </script>
+</body>
+</html>

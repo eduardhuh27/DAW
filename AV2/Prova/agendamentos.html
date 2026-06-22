@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio V - Meus Agendamentos</title>
+
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <h2>STUDIO V</h2> 
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="agendar.html">Novo Agendamento</a></li>
+                <li><a href="login.html" class="btn-login" style="background-color: transparent; border: 1px solid white; color: white !important;">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="appointments-section">
+        <div class="login-overlay"></div>
+        
+        <div class="login-card appointments-card">
+            <h3 class="texto-cursivo">Os seus momentos</h3>
+            <h2>MEUS AGENDAMENTOS</h2>
+            
+            <div id="resultadoAjax" class="appointments-list">
+                <p >A carregar os seus agendamentos...</p>
+            </div>
+            
+        </div>
+    </section>
+
+    <script>
+     
+        document.addEventListener("DOMContentLoaded", function() {
+            carregarAgendamentos();
+        });
+
+        function carregarAgendamentos() {
+            let divMsg = document.getElementById("resultadoAjax");
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let obj = JSON.parse(this.responseText);
+                        
+                        if (obj.sucesso) {
+                        
+                            divMsg.innerHTML = obj.html;
+                        } else {
+                            divMsg.innerHTML = "<p >" + obj.mensagem + "</p>";
+                        }
+                    } catch (e) {
+                        divMsg.innerHTML = "<p '>Erro ao processar os dados do servidor.</p>";
+                        console.error("Erro no JSON:", this.responseText);
+                    }
+                } else if (this.readyState == 4) {
+                    divMsg.innerHTML = "<p style='color: red;'>Erro de conexão ao banco de dados.</p>";
+                }
+            };
+
+            xhttp.open("POST", "processaAgendamentos.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("acao=listar");
+        }
+
+
+    </script>
+</body>
+</html>

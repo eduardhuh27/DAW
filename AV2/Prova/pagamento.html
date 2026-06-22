@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio V - Pagamento</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <h2>STUDIO V</h2> 
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="pacotes.html">Voltar aos Pacotes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="payment-section">
+        <div class="login-overlay"></div>
+        
+        <div class="login-card payment-card">
+            <h3 class="gold-text-cursive">Quase lá...</h3>
+            <h2>FINALIZAR COMPRA</h2>
+            
+            <div class="order-summary">
+                <p>Total a pagar:</p>
+                <h2 class="price-highlight">R$ 150<span class="cents">,00</span></h2>
+                <p class="points-earned">+ 55 Pontos de Fidelidade</p>
+            </div>
+            
+            <form id="formPagamento">
+                <div class="input-group full-width">
+                    <label for="metodo">Forma de Pagamento</label>
+                    <select id="metodo" name="metodo" required onchange="mudarMetodoPagamento()">
+                        <option value="pix" selected>PIX (Aprovação Imediata)</option>
+                        <option value="cartao">Cartão de Crédito</option>
+                    </select>
+                </div>
+
+                <div id="area-pix" class="payment-details" style="display: block;">
+                    <p class="pix-instruction">Copie a chave abaixo para realizar o pagamento no seu banco.</p>
+                    <div class="pix-key-box">
+                        <span id="chavePix">c644c100-c089-4b30-9b28</span>
+                        <button type="button" class="btn-dark btn-small" onclick="copiarPix()">Copiar</button>
+                    </div>
+                </div>
+
+                <div id="area-cartao" class="payment-details" style="display: none;">
+                    <div class="input-group full-width">
+                        <input type="text" placeholder="Número do Cartão" maxlength="19">
+                    </div>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <input type="text" placeholder="Validade (MM/AA)" maxlength="5">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" placeholder="CVV" maxlength="3">
+                        </div>
+                    </div>
+                    <div class="input-group full-width">
+                        <input type="text" placeholder="Nome impresso no cartão">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-gold full-width-btn">CONFIRMAR PAGAMENTO</button>
+            </form>
+
+            <div id="resultadoAjax" style="margin-top: 15px; font-weight: bold; min-height: 24px;"></div>
+        </div>
+    </section>
+
+    <script>
+        function mudarMetodoPagamento() {
+            let metodo = document.getElementById("metodo").value;
+            if (metodo === 'pix') {
+                document.getElementById("area-pix").style.display = "block";
+                document.getElementById("area-cartao").style.display = "none";
+            } else {
+                document.getElementById("area-pix").style.display = "none";
+                document.getElementById("area-cartao").style.display = "block";
+            }
+        }
+
+        function copiarPix() {
+            let chave = document.getElementById("chavePix").innerText;
+            navigator.clipboard.writeText(chave);
+            alert("Chave PIX copiada com sucesso!");
+        }
+
+        document.getElementById("formPagamento").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let metodo = document.getElementById("metodo").value;
+            let id_pedido = 5; 
+            
+            let divMsg = document.getElementById("resultadoAjax");
+
+            divMsg.innerHTML = "A processar pagamento...";
+            divMsg.style.color = "blue";
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let obj = JSON.parse(this.responseText);
+                        divMsg.innerHTML = obj.mensagem;
+                        
+                        if (obj.sucesso) {
+                            setTimeout(() => {
+                                window.location.href = "index.html";
+                            }, 2500);
+                        } 
+                    } catch (e) {
+                        divMsg.innerHTML = "Erro ao processar resposta do servidor.";
+                    }
+                } else if (this.readyState == 4) {
+
+                }
+            };
+
+          
+            xhttp.open("POST", "processaPagamento.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            
+       
+            let dados = "metodo_pagamento=" + encodeURIComponent(metodo) + 
+                        "&id_pedido=" + encodeURIComponent(id_pedido) +
+                        "&acao=atualizar_situacao";
+            
+            xhttp.send(dados);
+        });
+    </script>
+</body>
+</html>

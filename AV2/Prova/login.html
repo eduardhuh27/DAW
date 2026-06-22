@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio V - Login</title>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <h2>STUDIO V</h2> 
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="index.html">Voltar ao Início</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="login-section">
+        <div class="login-overlay"></div>
+        
+        <div class="login-card">
+            <h3 class="gold-text-cursive">Bem-vindo de volta</h3>
+            <h2>LOGIN</h2>
+            
+            <form id="formLogin">
+
+                <div class="input-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Senha" required>
+                </div>
+
+                <button type="submit" class="btn-gold" style="width: 100%; margin-top: 10px;">ENTRAR</button>
+            </form>
+
+            <div id="resultadoAjax" style="margin-top: 15px; font-weight: bold; min-height: 24px;"></div>
+
+            <p class="signup-link">Não possui conta? <a href="cadastro.html">Cadastre-se</a></p>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById("formLogin").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+
+            let email = document.getElementById("email").value;
+            let senha = document.getElementById("senha").value;
+            let divMsg = document.getElementById("resultadoAjax");
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    try {
+                        let obj = JSON.parse(this.responseText);
+                        divMsg.innerHTML = obj.mensagem;
+                        
+                        if (obj.sucesso) {
+                        
+                            setTimeout(() => {
+                                window.location.href = "index.html";
+                            }, 1500);
+                        } else {
+                            divMsg.style.color = "red";
+                        }
+                    } catch (e) {
+                        divMsg.innerHTML = "Erro ao processar resposta do servidor.";
+                        console.error(this.responseText);
+                    }
+                } else if (this.readyState == 4) {
+                    divMsg.innerHTML = "Erro de conexão.";
+                }
+            };
+
+            xhttp.open("POST", "processaLogin.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send( "email=" + encodeURIComponent(email) + "&senha=" + encodeURIComponent(senha));
+        });
+    </script>
+</body>
+</html>
