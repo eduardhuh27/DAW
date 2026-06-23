@@ -3,74 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio V - Meus Agendamentos</title>
-
+    <title>Studio V - Os Meus Agendamentos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style/style6.css"><link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/style4.css">
 </head>
 <body>
 
-    <header class="header">
-        <div class="logo">
-            <h2>STUDIO V</h2> 
+    <header>
+        <div class="logo-container">
+            <div class="logo">STUDIO V</div>
+            <ul class="nav-menu">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="servico.html">Serviços</a></li>
+        <li><a href="agendar.html">Agendar</a></li>
+        <li><a href="promocoes.html">Promoções</a></li>
+    </ul>
         </div>
-        <nav class="nav-menu">
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="agendar.html">Novo Agendamento</a></li>
-                <li><a href="login.html" class="btn-login" style="background-color: transparent; border: 1px solid white; color: white !important;">Sair</a></li>
-            </ul>
-        </nav>
+        <a href="#" class="login-btn">
+            <i class="fas fa-user-circle" style="font-size: 24px;"></i> Entrar
+        </a>
     </header>
 
-    <section class="appointments-section">
-        <div class="login-overlay"></div>
-        
-        <div class="login-card appointments-card">
-            <h3 class="texto-cursivo">Os seus momentos</h3>
-            <h2>MEUS AGENDAMENTOS</h2>
-            
-            <div id="resultadoAjax" class="appointments-list">
-                <p >A carregar os seus agendamentos...</p>
-            </div>
-            
+    <main class="appointments-container">
+        <div class="appointments-grid" id="gridAgendamentos">
+            <p style="text-align: center; font-weight: bold;">A buscar os seus agendamentos...</p>
         </div>
-    </section>
+    </main>
 
     <script>
-     
+        function irParaPagamento(id, valor) {
+   
+    sessionStorage.setItem('idPedido', id);
+    sessionStorage.setItem('valorPedido', valor);
+    window.location.href = 'pagamento.html';
+}
         document.addEventListener("DOMContentLoaded", function() {
-            carregarAgendamentos();
-        });
-
-        function carregarAgendamentos() {
-            let divMsg = document.getElementById("resultadoAjax");
+            let grid = document.getElementById("gridAgendamentos");
 
             let xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     try {
                         let obj = JSON.parse(this.responseText);
-                        
                         if (obj.sucesso) {
-                        
-                            divMsg.innerHTML = obj.html;
+                            grid.innerHTML = obj.html;
                         } else {
-                            divMsg.innerHTML = "<p >" + obj.mensagem + "</p>";
+                            grid.innerHTML = "<p style='color: red;'>" + obj.mensagem + "</p>";
                         }
                     } catch (e) {
-                        divMsg.innerHTML = "<p '>Erro ao processar os dados do servidor.</p>";
-                        console.error("Erro no JSON:", this.responseText);
+                        grid.innerHTML = "<p style='color: brown;'>Erro ao processar dados do servidor.</p>";
+                        console.error("Erro:", this.responseText);
                     }
                 } else if (this.readyState == 4) {
-                    divMsg.innerHTML = "<p style='color: red;'>Erro de conexão ao banco de dados.</p>";
+                    grid.innerHTML = "<p style='color: red;'>Erro de conexão com o banco.</p>";
                 }
             };
 
-            xhttp.open("POST", "processaAgendamentos.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhttp.send("acao=listar");
-        }
-
-
+            xhttp.open("GET", "processaAgendamentos.php", true);
+            xhttp.send();
+        });
     </script>
+    <script src="auth.js"></script>
 </body>
 </html>

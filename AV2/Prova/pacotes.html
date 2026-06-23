@@ -3,115 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studio V - Nossos Pacotes</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <title>Studio V - Promoções</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style/style4.css">
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
 
-    <header class="header">
-        <div class="logo">
-            <h2>STUDIO V</h2> 
+    <header>
+        <div class="logo-container">
+            <div class="logo">STUDIO V</div>
+           <ul class="nav-menu">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="servico.html">Serviços</a></li>
+        <li><a href="promocoes.html">Promoções</a></li>
+        <li><a href="agendar.html">Agendar</a></li>
+        <li><a href="agendamentos.html">Meus agendamentos</a></li>
+    </ul>
         </div>
-        <nav class="nav-menu">
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="agendar.html">Agendar</a></li>
-                <li><a href="promocoes.html">Promoções</a></li>
-                <li><a href="login.html" class="btn-login">Entrar</a></li>
-            </ul>
-        </nav>
+        <a href="#" class="login-btn">
+            <i class="fas fa-user-circle" style="font-size: 24px;"></i> Label
+        </a>
     </header>
 
-    <section class="page-header">
-        <div class="header-overlay"></div>
-        <div class="header-content">
-            <h3 class="gold-text-cursive">Custo-benefício</h3>
-            <h1 class="main-title">NOSSOS PACOTES</h1>
-            <p>Escolha a combinação perfeita de serviços e renove a sua beleza com condições exclusivas.</p>
-        </div>
-    </section>
-
-    <section class="packages-container">
-        <div class="packages-grid">
-
-            <div class="package-card">
-                <div class="package-top">
-                    <h3>Pacote Cavalheiro</h3>
-                    <p class="package-price">R$ 90<span>,00</span></p>
-                </div>
-                <ul class="package-features">
-                    <li>Corte Disfarçado ou Social</li>
-                    <li>Barba com Toalha Quente</li>
-                    <li>Sobrancelha Masculina</li>
-                    <li>Lavagem Especial</li>
-                </ul>
-                <button class="btn-dark full-width-btn" onclick="window.location.href='pagamento.html'">ADQUIRIR PACOTE</button>
+    <main class="promotions-container">
+        
+        <div class="promotions-grid">
+            
+            <div class="promo-card">
+                <h2>Promoção de<br>aniversário</h2>
+                <p class="promo-desc">Qualquer serviço com<br>10% de desconto, valido<br>apenas no mês do seu<br>aniversário</p>
+                <p class="promo-condition">Cupom de uso único</p>
+                <a href="#" class="btn-resgatar">Resgatar</a>
             </div>
 
-            <div class="package-card featured-package">
-                <div class="package-top">
-                    <span class="badge">MAIS VENDIDO</span>
-                    <h3>Pacote Renovação</h3>
-                    <p class="package-price">R$ 150<span>,00</span></p>
-                </div>
-                <ul class="package-features">
-                    <li>Corte Feminino Completo</li>
-                    <li>Hidratação Profunda</li>
-                    <li>Escova Modeladora</li>
-                    <li>Manicure Tradicional</li>
-                </ul>
-                <button class="btn-gold full-width-btn" onclick="window.location.href='pagamento.html'">ADQUIRIR PACOTE</button>
+            <div class="promo-card">
+                <h2>Festa junina</h2>
+                <p class="promo-desc">Qualquer serviço<br>relacionado a cabelo e<br>unha com 10% de<br>desconto, valido apenas<br>no mês do Junho</p>
+                <p class="promo-condition">Cupom de uso único</p>
+                <a href="#" class="btn-resgatar">Resgatar</a>
             </div>
 
-            <div class="package-card">
-                <div class="package-top">
-                    <h3>Spa Day</h3>
-                    <p class="package-price">R$ 220<span>,00</span></p>
-                </div>
-                <ul class="package-features">
-                    <li>Massagem Relaxante (45min)</li>
-                    <li>Limpeza de Pele Profunda</li>
-                    <li>Spa dos Pés e Mãos</li>
-                    <li>Banho Terapêutico</li>
-                </ul>
-                <button class="btn-dark full-width-btn" onclick="window.location.href='pagamento.html'">ADQUIRIR PACOTE</button>
+            <div class="promo-card">
+                <h2>Dia das Mães</h2>
+                <p class="promo-desc">Traga sua mãe e ela<br>ganha 20% de desconto<br>em qualquer serviço de<br>massagem ou SPA.</p>
+                <p class="promo-condition">Cupom de uso único</p>
+                <a href="#" class="btn-resgatar">Resgatar</a>
             </div>
 
-            <div class="package-card">
-                <div class="package-top">
-                    <h3>Transformação</h3>
-                    <p class="package-price">R$ 380<span>,00</span></p>
-                </div>
-                <ul class="package-features">
-                    <li>Coloração ou Luzes</li>
-                    <li>Tratamento Reconstrutor</li>
-                    <li>Corte de Pontas</li>
-                    <li>Escova com Finalização</li>
-                </ul>
-                <button class="btn-dark full-width-btn" onclick="window.location.href='pagamento.html'">ADQUIRIR PACOTE</button>
+            <div class="promo-card">
+                <h2>Combo Inverno</h2>
+                <p class="promo-desc">Faça o pacote completo<br>de pé e mão e ganhe<br>uma hidratação capilar<br>totalmente cortesia.</p>
+                <p class="promo-condition">Válido às terças e quartas</p>
+                <a href="#" class="btn-resgatar">Resgatar</a>
+            </div>
+
+            <div class="promo-card">
+                <h2>Amiga VIP</h2>
+                <p class="promo-desc">Indique uma amiga para<br>qualquer procedimento de<br>sobrancelha e ganhe<br>15% off na próxima visita.</p>
+                <p class="promo-condition">Cupom de uso único</p>
+                <a href="#" class="btn-resgatar">Resgatar</a>
             </div>
 
         </div>
-    </section>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-col">
-                <h4>Endereço</h4>
-                <p>R. Francisco Sá, 89<br>Copacabana, Rio de Janeiro<br>RJ, 22080-010</p>
-            </div>
-            <div class="footer-col">
-                <h4>Contato</h4>
-                <p>(21) 92184-2854</p>
-                <p>(21) 2569-2877</p>
-                <p>studiov@gmail.com</p>
-            </div>
-            <div class="footer-col social">
-                <p>@STUDIOV</p>
-            </div>
-        </div>
-    </footer>
-
+    </main>
+<script src="auth.js"></script>
 </body>
 </html>

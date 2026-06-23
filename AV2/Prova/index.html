@@ -1,82 +1,210 @@
-
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Studio V - Salão de Beleza</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style/style.css">
+   
+    </style>
 </head>
 <body>
+   
 
-    <header class="header">
-        <div class="logo">
-            <h2>STUDIO V</h2> 
-        </div>
-        <nav class="nav-menu">
-            <ul>
-                <li><a href="agendar.html">Agendar</a></li>
-                <li><a href="pacotes.html">Pacotes</a></li>
-                <li><a href="promocoes.html">Promoções</a></li>
-                <li><a href="#servicos">Serviços</a></li>
-                <li><a href="agendamentos.html">Meus agendamentos</a></li>
-                <li><a href="login.html" id="btn-entrar" class="btn-login">Entrar</a></li>
-            </ul>
-        </nav>
+    <header>
+    <div class="logo">STUDIO V</div>
+    
+    <ul class="nav-menu">
+
+        <li><a href="servico.html">Serviços</a></li>
+        <li><a href="promocoes.html">Promoções</a></li>
+        <li><a href="agendar.html">Agendar</a></li>
+        <li><a href="agendamentos.html">Meus agendamentos</a></li>
+    </ul>
+
+        <a href="login.html" class="login-btn">
+            Entrar <i class="fas fa-user-circle" style="font-size: 20px;"></i>
+        </a>
     </header>
 
-    <section id="hero" class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h3 class="texto-cursivo">Cabeleireiros experientes</h3>
-            <h1 class="main-title">Para a melhor versao de voce</h1>
-            
-            <div class="hero-desc">
-                <h4 class="texto-cursivo">Inovaçao</h4>
-                <p class="desc-bold">Tudo que voce precisa para renovar sua beleza em um so lugar</p>
-                <p class="desc-peq">Os melhores profissionais para atender de forma personalizada cada um de nossos clientes.</p>
-            </div>
 
-            <button class="btn-gold" onclick="window.location.href='agendar.html'">AGENDE SEU ATENDIMENTO</button>
+    <section class="hero">
+        <div class="hero-box">
+            <span class="subtitle">Cabelereiros experientes</span>
+            <h1>Para a<br>melhor<br>versão de<br>você</h1>
         </div>
     </section>
 
-    <section id="servicos" class="servico-section">
-        <h2 class="section-titulo">Serviços</h2>
-        <div class="servico-grid">
-            
-            <div class="cartao">
-                <h3>Escova</h3>
-                <p class="service-desc">Escova modeladora com hidrataçao profunda.</p>
-                <button class="btn-dark" onclick="window.location.href='agendar.html'" >AGENDE SEU HORÁRIO</button>
+    <section class="info-section">
+        <div class="info-cards">
+
+            <div class="card gold-card">
+                <span class="accent">Conheça nosso<br>espaço</span>
+                <h2>Agende seu<br>horário</h2>
+                <p>ENDEREÇO: R. Francisco Sá, 89 -<br>Copacabana, Rio de Janeiro - RJ,<br>22080-010</p>
+                <div class="contact">
+                    <strong>Contato:</strong>
+                    (21)921842854<br>
+                    (21)25692877
+                </div>
             </div>
 
-            <div class="cartao">
-                <h3>Corte</h3>
-                <p class="service-desc">Corte feminino com lavagem e finalizaçao.</p>
-                <button class="btn-dark" onclick="window.location.href='agendar.html'">AGENDE SEU HORÁRIO</button>
+            <div class="card dark-card">
+                <span class="accent">Estamos</span>
+                <h2>FUNCIONANDO</h2>
+                <div class="hours">
+                    <p class="time">8:00H - 19:00H</p>
+                    <p>SEGUNDA - TERÇA -</p>
+                    <p>QUARTA - QUINTA - SEXTA</p>
+                    <br>
+                    <p class="time">8:00H - 19:00H</p>
+                </div>
             </div>
+        </div>
 
-            <div class="cartao">
-                <h3>Coloracao</h3>
-                <p class="service-desc">Tintura completa com produtos premium.</p>
-                <button class="btn-dark" onclick="window.location.href='agendar.html'">AGENDE SEU HORÁRIO</button>
+        <div class="carousel-mockup">
+            <div class="carousel-images">
+                <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Massagem" class="carousel-img img-left">
+                <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Corte de Cabelo" class="carousel-img img-center">
+                <img src="https://tse1.explicit.bing.net/th/id/OIP.IetbSFQP2oOQDOGynZsUyQHaEO?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Manicure" class="carousel-img img-right">
             </div>
-
-            <div class="cartao">
-                <h3>Manicure</h3>
-                <p class="service-desc">Cutilagem e esmaltação tradicional ou gel.</p>
-                <button class="btn-dark"  onclick="window.location.href='agendar.html'">AGENDE SEU HORÁRIO</button>
+            <div class="carousel-controls">
+                <i class="fas fa-chevron-left"></i>
+                <i class="fas fa-chevron-right"></i>
             </div>
-
         </div>
     </section>
 
-    <section id="info" class="info-section">
-        <div class="info-container">
-            <div class="contato">
-                <h3 class="texto-cursivo">Conheça nosso espaço</h3>
-                <h2>Agende seu horário</h2>
-                
-                <div class="endereco">
-                    <p><strong>ENDEREÇO:</strong> R. Francisco Sa, 89 - Copacabana, Rio de Janeiro - RJ, 22080-
+    <section class="promo">
+        <div class="promo-box">
+            <span class="accent">Inovação</span>
+            <h2>Tudo que você precisa<br>para renovar sua<br>beleza em um só lugar</h2>
+            <p>Os melhores profissionais para<br>atender de forma personalizada cada um<br>de nossos clientes</p>
+            <button class="btn-outline" onclick="window.location.href='descricao.html'">Conheça nossos serviços</button>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <i class="fas fa-chevron-left nav-arrow left"></i>
+        <i class="fas fa-chevron-right nav-arrow right"></i>
+        
+        <span class="accent">O que os nosso clientes dizem</span>
+        <h2>AVALIAÇÃO DE CLIENTES</h2>
+
+        <div class="reviews-container">
+            <div class="review">
+                <p>Salvaram o meu cabelo e me deixaram incrível, um dia MEGA especial para mim.</p>
+                <h4>Raquel Miranda</h4>
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="review">
+                <p>Não confio as minhas unhas a mais ninguém, são feitas cuidadosamente e duram muito tempo.</p>
+                <h4>Eliza Queiros</h4>
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+            </div>
+            <div class="review">
+                <p>O melhor atendimento que ja recebi em um salão de beleza, que qualidade, eu saí radiante.</p>
+                <h4>Leila Diniz</h4>
+                <div class="stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">STUDIO V</div>
+        
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>ENDEREÇO</h3>
+                <p>R. Francisco Sá, 89<br>Copacabana, Rio de Janeiro<br>RJ, 22080-010</p>
+            </div>
+            
+            <div class="footer-col">
+                <h3>CONTATO</h3>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <i class="fab fa-telegram-plane"></i> (21)921842854
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-instagram"></i> @STUDIOV
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i> (21)921842854
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-twitter"></i> @STUDIOV
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i> (21)25692877
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i> studiov@gmail.com
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <i class="fas fa-lock footer-lock"></i>
+    </footer>
+
+   <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let xhttp = new XMLHttpRequest();
+        
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                try {
+                    let res = JSON.parse(this.responseText);
+                    
+                    if (res.logado) {
+                        let btnLogin = document.querySelector('.btn-login') || document.querySelector('.login-btn');
+                        
+                        if (btnLogin) {
+            
+                            btnLogin.innerHTML = "<span style='color: var(--gold); margin-right: 15px; font-weight: bold;'>Olá, " + res.nome + "</span>" +
+                                                 "<a href='javascript:void(0)' onclick='fazerLogout()' style='color: #e74c3c; text-decoration: none; font-weight: bold; border: 1px solid #e74c3c; padding: 5px 10px; border-radius: 4px;'>Sair</a>";
+                        
+                            btnLogin.removeAttribute("href");
+                            btnLogin.style.background = "none";
+                        }
+                    }
+                } catch (e) {
+                    console.error("Erro ao verificar sessão: ", e);
+                }
+            }
+        };
+        
+        xhttp.open("GET", "verificaSessao.php", true);
+        xhttp.send();
+    });
+
+    function fazerLogout() {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                window.location.reload(); 
+            }
+        };
+        xhttp.open("GET", "logout.php", true);
+        xhttp.send();
+    }
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

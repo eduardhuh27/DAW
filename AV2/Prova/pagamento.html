@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Studio V - Pagamento</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style7.css"> <link rel="stylesheet" href="style/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -14,10 +14,13 @@
             <h2>STUDIO V</h2> 
         </div>
         <nav class="nav-menu">
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="pacotes.html">Voltar aos Pacotes</a></li>
-            </ul>
+            <ul class="nav-menu">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="servico.html">Serviços</a></li>
+        <li><a href="agendar.html">Agendar</a></li>
+        <li><a href="promocoes.html">Promoções</a></li>
+        <li><a href="agendamentos.html">Meus agendamentos</a></li>
+    </ul>
         </nav>
     </header>
 
@@ -30,8 +33,8 @@
             
             <div class="order-summary">
                 <p>Total a pagar:</p>
-                <h2 class="price-highlight">R$ 150<span class="cents">,00</span></h2>
-                <p class="points-earned">+ 55 Pontos de Fidelidade</p>
+                <h2 class="price-highlight" id="displayPreco">R$ 0<span class="cents">,00</span></h2>
+                <p class="points-earned">+ Pontos de Fidelidade</p>
             </div>
             
             <form id="formPagamento">
@@ -76,6 +79,18 @@
     </section>
 
     <script>
+
+        const idPedidoLocal = sessionStorage.getItem('idPedido');
+        const valorPedidoLocal = sessionStorage.getItem('valorPedido');
+
+        if (!idPedidoLocal) {
+            alert("Nenhum pedido selecionado para pagamento.");
+            window.location.href = "agendamentos.html";
+        } else {
+
+            document.getElementById("displayPreco").innerHTML = "R$ " + valorPedidoLocal + "<span class='cents'>,00</span>";
+        }
+
         function mudarMetodoPagamento() {
             let metodo = document.getElementById("metodo").value;
             if (metodo === 'pix') {
@@ -97,8 +112,6 @@
             event.preventDefault();
 
             let metodo = document.getElementById("metodo").value;
-            let id_pedido = 5; 
-            
             let divMsg = document.getElementById("resultadoAjax");
 
             divMsg.innerHTML = "A processar pagamento...";
@@ -112,29 +125,34 @@
                         divMsg.innerHTML = obj.mensagem;
                         
                         if (obj.sucesso) {
+                            divMsg.style.color = "green";
                             setTimeout(() => {
-                                window.location.href = "index.html";
+                                window.location.href = "agendamentos.html"; 
                             }, 2500);
-                        } 
+                        } else {
+                            divMsg.style.color = "red";
+                        }
                     } catch (e) {
                         divMsg.innerHTML = "Erro ao processar resposta do servidor.";
+                        divMsg.style.color = "brown";
                     }
                 } else if (this.readyState == 4) {
-
+                    divMsg.innerHTML = "Erro de conexão.";
+                    divMsg.style.color = "red";
                 }
             };
 
-          
             xhttp.open("POST", "processaPagamento.php", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             
-       
+
             let dados = "metodo_pagamento=" + encodeURIComponent(metodo) + 
-                        "&id_pedido=" + encodeURIComponent(id_pedido) +
+                        "&id_pedido=" + encodeURIComponent(idPedidoURL) +
                         "&acao=atualizar_situacao";
             
             xhttp.send(dados);
         });
     </script>
+    <script src="auth.js"></script>
 </body>
 </html>

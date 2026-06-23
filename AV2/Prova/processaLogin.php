@@ -22,7 +22,7 @@ session_start();
             exit;
         }
 
-        $comandoBusca = $conn->prepare("SELECT senha,nomes FROM usuario WHERE email = ?");
+        $comandoBusca = $conn->prepare("SELECT senha,nome FROM usuario WHERE email = ?");
         $comandoBusca->bind_param("s", $email);
         $comandoBusca->execute();
         $resultado = $comandoBusca->get_result();

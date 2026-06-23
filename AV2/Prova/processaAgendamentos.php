@@ -14,32 +14,52 @@ try {
 
     $html = "";
 
-    $html .= "<table>";
-    $html .= "<tr>";
-    $html .= "<th>Dia</th>";
-    $html .= "<th>Horario</th>";
-    $html .= "<th>Servico</th>";
-    $html .= "<th>Profissional</th>";
-    $html .= "</tr>";
-
-    $sqlM = "SELECT dia, horario,servico, profissional FROM agendamento";
+    $sqlM = "SELECT id,dia, horario, servico, profissional,valor FROM agendamento";
     $resultM = $conn->query($sqlM);
 
+
+    $meses = [
+        '01' => 'Janeiro', '02' => 'Fevereiro', '03' => 'Março',
+        '04' => 'Abril', '05' => 'Maio', '06' => 'Junho',
+        '07' => 'Julho', '08' => 'Agosto', '09' => 'Setembro',
+        '10' => 'Outubro', '11' => 'Novembro', '12' => 'Dezembro'
+    ];
+
     while ($linha = $resultM->fetch_assoc()) {
-        $html .= "<tr>";
-        $html .= "<td>" . htmlspecialchars($linha['dia']) . "</td>";
-        $html .= "<td>" . htmlspecialchars($linha['horario']) . "</td>";
-        $html .= "<td>" . htmlspecialchars($linha['servico'] ?? '') . "</td>";
-        if($linha['profissional']!='Qualquer')
-        $html .= "<td>" . htmlspecialchars($linha['profissional'] ?? '') . "</td>";
-        else{
-            $html .= "<td>" . htmlspecialchars('Escolhendo o melhor para lhe atender') . "</td>";
+        $servico = htmlspecialchars($linha['servico'] ?? 'Agendamento');
+        $horario = htmlspecialchars($linha['horario']);
+        
+
+        $timestamp = strtotime($linha['dia']);
+        $diaFormatado = date('d', $timestamp);
+        $mesFormatado = $meses[date('m', $timestamp)] ?? date('m', $timestamp);
+
+        if ($linha['profissional'] != 'Qualquer') {
+            $profissional = htmlspecialchars($linha['profissional']);
+        } else {
+            $profissional = 'Nossa melhor equipe';
         }
         
-        $html .= "</tr>";
+        $html .= '<div class="appointment-card">';
+        $html .= '    <h3 class="card-title">' . $servico . '</h3>';
+        $html .= '    <div class="card-content">';
+        $html .= '        <div class="info-left">';
+        $html .= '            <p><span class="label">DIA:</span> ' . $diaFormatado . '</p>';
+        $html .= '            <p><span class="label">Mês:</span> ' . $mesFormatado . '</p>';
+        $html .= '            <p><span class="label">Com:</span> ' . $profissional . '</p>';
+        $html .= '        </div>';
+        $html .= '        <div class="info-right">';
+        $html .= '            <p><span class="label">Hora:</span></p>';
+        $html .= '            <p class="time-value">' . $horario . '</p>';
+        $html .= '        </div>';
+        $html .= '  <button class="btn-resgatar" onclick="irParaPagamento(' . $linha['id'] . ', ' . $linha['valor'] . ')">Pagar Agora</button>';
+        $html .= '    </div>';
+        $html .= '</div>';
     }
-    $html .= "</table><br><br>";
 
+    if ($resultM->num_rows === 0) {
+        $html = "<p style='text-align:center; grid-column: 1 / -1; font-weight:bold;'>Você ainda não possui agendamentos marcados.</p>";
+    }
 
     echo json_encode(["sucesso" => true, "html" => $html]);
 

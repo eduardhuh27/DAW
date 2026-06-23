@@ -1,0 +1,165 @@
+
+:root {
+    --primary-gold: #d4af37;
+    --dark-gray: #333333;
+    --darker-gray: #222222;
+    --light-bg: #ffffff;
+    --text-white: #ffffff;
+    --text-muted: #aaaaaa;
+    --font-main: 'Montserrat', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    background: radial-gradient(circle at right, rgba(94, 61, 3, 0.425) 0%, #252424  100%);
+    background-attachment: fixed;
+   
+    font-family: var(--font-main);
+    background-color: var(--light-bg);
+    color: var(--dark-gray);
+}
+
+
+header {
+    background-color: var(--dark-gray);
+    color: var(--primary-gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.menu-icon {
+    font-size: 28px;
+    cursor: pointer;
+    color: #000;
+}
+
+.login-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    color: var(--primary-gold);
+}
+
+
+.services-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+
+.service-section {
+    margin-bottom: 60px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: var(--darker-gray);
+}
+
+
+.service-card {
+    display: flex;
+    background-color: var(--dark-gray);
+    border-radius: 20px;
+    overflow: hidden;
+    height: 380px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+
+.card-content {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--text-white);
+}
+
+.service-item {
+    margin-bottom: 30px;
+}
+
+.service-item:last-child {
+    margin-bottom: 0;
+}
+
+.service-item h3 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.service-item p {
+    font-size: 13px;
+    color: var(--text-white);
+    margin-bottom: 3px;
+}
+
+.service-item .price {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+
+.card-image {
+    flex: 1;
+    background-size: cover;
+    background-position: center;
+}
+
+
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+
+    .service-card {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .card-image {
+        height: 250px;
+        order: -1;
+    }
+
+    .card-content {
+        padding: 30px 20px;
+    }
+}
