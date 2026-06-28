@@ -25,9 +25,9 @@ session_start();
             $comandoInsert->bind_param("sss", $nome, $email, $senha);
             
             if ($comandoInsert->execute()) {
-                $_SESSION['logado'] = true;
+                $_SESSION['logado'] = false;
                 $_SESSION['nome'] = $nome;
-                echo json_encode(["sucesso" => true, "mensagem" => "Cadastro e login realizados com sucesso! Bem-vindo, " . $nome . "."]);
+                echo json_encode(["sucesso" => true, "mensagem" => "Cadastro realizado com sucesso! Bem-vindo, " . $nome . "."]);
             } else {
                 echo json_encode(["sucesso" => false, "mensagem" => "Erro ao criar novo utilizador."]);
             }
