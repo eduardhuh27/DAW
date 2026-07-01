@@ -24,53 +24,64 @@
         <li><a href="agendamentos.html">Meus agendamentos</a></li>
     </ul>
         </div>
-        <a href="#" class="login-btn">
+        <a href="login.html" class="login-btn">
             <i class="fas fa-user-circle" style="font-size: 24px;"></i> Label
         </a>
     </header>
 
     <main class="promotions-container">
-        
-        <div class="promotions-grid">
-            
-            <div class="promo-card">
-                <h2>Promoção de<br>aniversário</h2>
-                <p class="promo-desc">Qualquer serviço com<br>10% de desconto, valido<br>apenas no mês do seu<br>aniversário</p>
-                <p class="promo-condition">Cupom de uso único</p>
-                <a href="#" class="btn-resgatar">Resgatar</a>
-            </div>
-
-            <div class="promo-card">
-                <h2>Festa junina</h2>
-                <p class="promo-desc">Qualquer serviço<br>relacionado a cabelo e<br>unha com 10% de<br>desconto, valido apenas<br>no mês do Junho</p>
-                <p class="promo-condition">Cupom de uso único</p>
-                <a href="#" class="btn-resgatar">Resgatar</a>
-            </div>
-
-            <div class="promo-card">
-                <h2>Dia das Mães</h2>
-                <p class="promo-desc">Traga sua mãe e ela<br>ganha 20% de desconto<br>em qualquer serviço de<br>massagem ou SPA.</p>
-                <p class="promo-condition">Cupom de uso único</p>
-                <a href="#" class="btn-resgatar">Resgatar</a>
-            </div>
-
-            <div class="promo-card">
-                <h2>Combo Inverno</h2>
-                <p class="promo-desc">Faça o pacote completo<br>de pé e mão e ganhe<br>uma hidratação capilar<br>totalmente cortesia.</p>
-                <p class="promo-condition">Válido às terças e quartas</p>
-                <a href="#" class="btn-resgatar">Resgatar</a>
-            </div>
-
-            <div class="promo-card">
-                <h2>Amiga VIP</h2>
-                <p class="promo-desc">Indique uma amiga para<br>qualquer procedimento de<br>sobrancelha e ganhe<br>15% off na próxima visita.</p>
-                <p class="promo-condition">Cupom de uso único</p>
-                <a href="#" class="btn-resgatar">Resgatar</a>
-            </div>
-
-        </div>
-
+   
+<section class="promocoes-section">
+ 
+    <div class="promocoes-grid" id="gridPromocoes">
+        <p style="text-align: center; color: white;">A carregar promoções exclusivas...</p>
+    </div>
+</section>
     </main>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    let grid = document.getElementById("gridPromocoes");
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            try {
+                let obj = JSON.parse(this.responseText);
+                
+                if (obj.sucesso) {
+                    grid.innerHTML = ""; 
+                    obj.dados.forEach(function(promo) {
+
+                        let cartaoHTML = `
+                            <div class="promo-card" style="background: #333; padding: 30px; border-radius: 15px; text-align: center; color: white; display: flex; flex-direction: column; justify-content: space-between;">
+                                
+                                <div>
+                                    <h2 style="font-size: 24px; margin-bottom: 20px;">${promo.titulo}</h2>
+                                    <p style="font-size: 14px; line-height: 1.5; margin-bottom: 30px;">${promo.descricao}</p>
+                                </div>
+                                
+                                <div>
+                                    <p style="font-size: 12px; font-weight: bold; margin-bottom: 15px;">${promo.regra_uso}</p>
+                                    <button class="btn-resgatar" style="color: #c79419; background: transparent; border: none; font-weight: bold; cursor: pointer;">Resgatar</button>
+                                </div>
+                                
+                            </div>
+                        `;
+                        grid.innerHTML += cartaoHTML;
+                    });
+                } else {
+                    grid.innerHTML = "<p style='color: red; text-align: center;'>Erro ao carregar promoções: " + obj.mensagem + "</p>";
+                }
+            } catch (e) {
+                console.error("Erro ao analisar JSON:", this.responseText);
+                grid.innerHTML = "<p style='color: red; text-align: center;'>Erro interno ao processar as promoções.</p>";
+            }
+        }
+    };
+    xhttp.open("GET", "buscarPromocoes.php", true);
+    xhttp.send();
+});
+</script>
 <script src="auth.js"></script>
 </body>
 </html>

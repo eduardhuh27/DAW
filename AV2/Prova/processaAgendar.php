@@ -18,13 +18,14 @@
     $profissional = htmlspecialchars($_POST['profissional'] ?? "");
     $data = htmlspecialchars($_POST['data'] ?? "");
     $horario = htmlspecialchars($_POST['horario'] ?? "");    
+    $id_usuario = $_SESSION['id_usuario'];
 
         if (empty($servico) || empty($profissional) || empty($data) || empty($horario)) {
             echo json_encode(["sucesso" => false, "mensagem" => "Preencha todos os campos."]);
             exit;
         }
-            $comandoInsert = $conn->prepare("INSERT INTO agendamento (servico,profissional, dia ,horario,valor,situacao ) VALUES (?, ?, ?,?,?,'Esperando pagamento')");
-            $comandoInsert->bind_param("ssssi", $servico, $profissional, $data,$horario,$valor);
+            $comandoInsert = $conn->prepare("INSERT INTO agendamento (id_usuario,servico,profissional, dia ,horario,valor,situacao ) VALUES (?,?, ?, ?,?,?,'Esperando pagamento')");
+            $comandoInsert->bind_param("issssi", $id_usuario, $servico, $profissional, $data,$horario,$valor);
             
             if ($comandoInsert->execute()) {
                 $nome= $_SESSION['nome'] ;

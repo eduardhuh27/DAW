@@ -3,6 +3,15 @@ session_start();
 
 header('Content-Type: application/json');
 
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+    echo json_encode([
+        "sucesso" => false, 
+        "erro_login" => true, 
+        "mensagem" => "Precisa de iniciar sessão para ver os seus agendamentos."
+    ]);
+    exit;
+}
+
 $host = 'localhost';
 $dbname = 'salao';
 $username = 'root';
@@ -14,8 +23,13 @@ try {
 
     $html = "";
 
-    $sqlM = "SELECT id,dia, horario, servico, profissional,valor FROM agendamento";
-    $resultM = $conn->query($sqlM);
+    $id_usuario = $_SESSION['id_usuario'];
+    $situcaoEscolhida="Esperando pagamento";
+
+    $comandoBusca = $conn->prepare("SELECT id, valor, dia, horario, servico, profissional FROM agendamento WHERE id_usuario = ? and situacao=?");
+    $comandoBusca->bind_param("is", $id_usuario,$situcaoEscolhida);
+    $comandoBusca->execute();
+    $resultM = $comandoBusca->get_result();
 
 
     $meses = [

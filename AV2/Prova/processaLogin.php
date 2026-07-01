@@ -22,7 +22,7 @@ session_start();
             exit;
         }
 
-        $comandoBusca = $conn->prepare("SELECT senha,nome FROM usuario WHERE email = ?");
+        $comandoBusca = $conn->prepare("SELECT id,senha,nome FROM usuario WHERE email = ?");
         $comandoBusca->bind_param("s", $email);
         $comandoBusca->execute();
         $resultado = $comandoBusca->get_result();
@@ -31,6 +31,7 @@ session_start();
             if ($linha['senha'] === $senha) {
                 $_SESSION['logado'] = true;
                 $_SESSION['nome'] = $linha['nome'];
+                $_SESSION['id_usuario'] = $linha['id'];
                 $nome = $linha['nome'];
                 echo json_encode(["sucesso" => true, "mensagem" => "Login realizado com sucesso! Bem-vindo, " . $nome . "."]);
             } else {

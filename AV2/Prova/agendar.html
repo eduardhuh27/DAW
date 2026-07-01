@@ -34,28 +34,17 @@
                 <div class="form-grid">
                     
                     <div class="campo full-width">
-                        <label for="servico">Serviço Desejado</label>
-                        <select id="servico" name="servico" required>
-                            <option value="" disabled selected>Selecione um serviço...</option>
-                            <option value="Corte Feminino" >Corte Feminino R$ 90.00</option>
-                            <option value="Corte Masculino">Corte Masculino R$ 50.00</option>
-                            <option value="Escova e Hidratacao">Escova e Hidratação R$ 120.00</option>
-                            <option value="Coloracao">Coloração R$ 110.00</option>
-                            <option value="Manicure e Pedicure">Manicure e Pedicure R$ 60.00</option>
-                            <option value="Penteado">Penteado R$ 150.00</option>
-                            <option value="Maquiagem">Maquiagem R$ 140.00</option>
-                        </select>
-                    </div>
+    <label for="servico">Serviço Desejado</label>
+    <select id="servico" name="servico" required>
+        <option value="" disabled selected>A carregar serviços...</option>
+    </select>
+    <h3 style="color: #c79419; margin-top: 10px; font-size: 20px;" id="valorExibicao">R$ 0,00</h3>
+</div>
 
                     <div class="campo full-width">
                         <label for="profissional">Profissional</label>
                         <select id="profissional" name="profissional" required>
                             <option value="" disabled selected>Escolha o profissional...</option>
-                            <option value="Qualquer">Qualquer profissional disponível</option>
-                            <option value="Leila Diniz">Leila Diniz (Cabelo)</option>
-                            <option value="Carlos Bezerra">Carlos Bezerra (Cabelo/Barba)</option>
-                            <option value="Eliza Queiros">Eliza Queiros (Unhas)</option>
-                            <option value="Raquel Miranda">Raquel Miranda (Química)</option>
                         </select>
                     </div>
 
@@ -91,88 +80,130 @@
     </section>
 
     <script>
-                
-        const tabelaPrecos = {
-            "Corte Feminino": 90.00,
-            "Corte Masculino": 50.00,
-            "Escova e Hidratacao": 120.00,
-            "Coloracao": 180.00,
-            "Manicure e Pedicure": 65.00,
-            "Penteado": 150.00,
-            "Maquiagem": 140.00
-        };
+  let tabelaPrecos = {};
+let selectServico = document.getElementById("servico");
+let displayValor = document.getElementById("valorExibicao");
+let selectProfissional = document.getElementById("profissional");
 
-      
-        let selectServico = document.getElementById("servico");
-        let displayValor = document.getElementById("valorExibicao");
-
-     
-        selectServico.addEventListener("change", function() {
-            let servicoEscolhido = this.value; 
-            let preco = tabelaPrecos[servicoEscolhido]; 
-            if (preco) {
-               
-                displayValor.innerText = "R$ " + preco.toFixed(2).replace(".", ",");
-            } else {
-                displayValor.innerText = "R$ 0,00";
-            }
-        });
-        
-        let inputData = document.getElementById('data');
-        let hoje = new Date().toISOString().split('T')[0];
-        inputData.setAttribute('min', hoje);
-
-        document.getElementById("formAgendamento").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            let servico = document.getElementById("servico").value;
-            let valorFinal = tabelaPrecos[servico];
-            let profissional = document.getElementById("profissional").value;
-            let data = document.getElementById("data").value;
-            let horario = document.getElementById("horario").value;
-            
-            let divMsg = document.getElementById("resultadoAjax");
-
-            divMsg.innerHTML = "A processar agendamento...";
-            divMsg.style.color = "blue";
-
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    try {
-                        let obj = JSON.parse(this.responseText);
-                        divMsg.innerHTML = obj.mensagem;
-                        
-                        if (obj.sucesso) {
-                            divMsg.style.color = "green";
-                            setTimeout(() => {
-                                window.location.href = "agendamentos.html";
-                            }, 2000);
-                        } else {
-                            divMsg.style.color = "red";
-                        }
-                    } catch (e) {
-                        divMsg.innerHTML = "Erro ao processar resposta do servidor.";
-                        divMsg.style.color = "brown";
-                        console.error(this.responseText);
+document.addEventListener("DOMContentLoaded", function() {
+    
+    let xhttpServicos = new XMLHttpRequest();
+    xhttpServicos.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            try {
+                let obj = JSON.parse(this.responseText);
+                if (obj.sucesso) {
+                    tabelaPrecos = obj.dados;
+                    selectServico.innerHTML = '<option value="" disabled selected>Selecione um serviço...</option>';
+                    for (let nomeServico in tabelaPrecos) {
+                        let preco = tabelaPrecos[nomeServico];
+                        let precoFormatado = preco.toFixed(2).replace(".", ",");
+                        selectServico.innerHTML += `<option value="${nomeServico}">${nomeServico}</option>`;
                     }
-                } else if (this.readyState == 4) {
-                    divMsg.innerHTML = "Erro de conexão com o banco de dados.";
+                } else {
+                    console.error("Erro no PHP:", obj.mensagem);
+                    selectServico.innerHTML = '<option value="" disabled selected>Erro ao carregar serviços</option>';
+                }
+            } catch (e) {
+                console.error("Erro ao analisar resposta dos serviços.");
+            }
+        }
+    };
+    xhttpServicos.open("GET", "buscarPrecos.php", true);
+    xhttpServicos.send();
+
+    let xhttpProfissionais = new XMLHttpRequest();
+    xhttpProfissionais.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            try {
+                let obj = JSON.parse(this.responseText);
+                if (obj.sucesso) {
+                    selectProfissional.innerHTML = `
+                        <option value="" disabled selected>Escolha o profissional...</option>
+                        <option value="Qualquer">Qualquer profissional disponível</option>
+                    `;
+                    obj.dados.forEach(function(prof) {
+                        selectProfissional.innerHTML += `<option value="${prof.nome}">${prof.nome} (${prof.especialidade})</option>`;
+                    });
+                } else {
+                    selectProfissional.innerHTML = '<option value="" disabled selected>Erro ao carregar profissionais</option>';
+                }
+            } catch (e) {
+                console.error("Erro ao analisar resposta dos profissionais.");
+            }
+        }
+    };
+    xhttpProfissionais.open("GET", "buscarProfissionais.php", true);
+    xhttpProfissionais.send();
+});
+
+selectServico.addEventListener("change", function() {
+    let servicoEscolhido = this.value; 
+    let preco = tabelaPrecos[servicoEscolhido]; 
+    
+    if (displayValor) { 
+        if (preco) {
+            displayValor.innerText = "R$ " + preco.toFixed(2).replace(".", ",");
+        } else {
+            displayValor.innerText = "R$ 0,00";
+        }
+    }
+});
+
+let inputData = document.getElementById('data');
+let hoje = new Date().toISOString().split('T')[0];
+inputData.setAttribute('min', hoje);
+
+document.getElementById("formAgendamento").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    let servico = document.getElementById("servico").value;
+    let valorFinal = tabelaPrecos[servico];
+    let profissional = document.getElementById("profissional").value;
+    let data = document.getElementById("data").value;
+    let horario = document.getElementById("horario").value;
+    
+    let divMsg = document.getElementById("resultadoAjax");
+    divMsg.innerHTML = "A processar agendamento...";
+    divMsg.style.color = "blue";
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            try {
+                let obj = JSON.parse(this.responseText);
+                divMsg.innerHTML = obj.mensagem;
+                
+                if (obj.sucesso) {
+                    divMsg.style.color = "green";
+                    setTimeout(() => {
+                        window.location.href = "agendamentos.html";
+                    }, 2000);
+                } else {
                     divMsg.style.color = "red";
                 }
-            };
+            } catch (e) {
+                divMsg.innerHTML = "Erro ao processar resposta do servidor.";
+                divMsg.style.color = "brown";
+                console.error(this.responseText);
+            }
+        } else if (this.readyState == 4) {
+            divMsg.innerHTML = "Erro de conexão com o banco de dados.";
+            divMsg.style.color = "red";
+        }
+    };
 
-            xhttp.open("POST", "processaAgendar.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            
-            let dados = "servico=" + encodeURIComponent(servico) + 
-                        "&valor=" + encodeURIComponent(valorFinal) +
-                        "&profissional=" + encodeURIComponent(profissional) + 
-                        "&data=" + encodeURIComponent(data) + 
-                        "&horario=" + encodeURIComponent(horario);
-            
-            xhttp.send(dados);
-        });
+    xhttp.open("POST", "processaAgendar.php", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+    let dados = "servico=" + encodeURIComponent(servico) + 
+                "&valor=" + encodeURIComponent(valorFinal) +
+                "&profissional=" + encodeURIComponent(profissional) + 
+                "&data=" + encodeURIComponent(data) + 
+                "&horario=" + encodeURIComponent(horario);
+    
+    xhttp.send(dados);
+});
     </script>
     <script src="auth.js"></script>
 </body>

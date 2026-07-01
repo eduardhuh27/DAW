@@ -123,6 +123,14 @@ header {
     margin-bottom: 30px;
 }
 
+.promocoes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;  
+    max-width: 1200px;
+    margin: 0 auto; 
+    padding: 20px;
+}
 .btn-resgatar {
     color: var(--primary-gold);
     text-decoration: none;
@@ -136,6 +144,7 @@ header {
     color: #f0c950;
     text-decoration: underline;
 }
+
 
 
 @media (max-width: 768px) {
